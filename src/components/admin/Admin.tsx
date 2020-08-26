@@ -3,8 +3,8 @@ import React from 'react';
 import IBooking from '../../interface/IBooking';
 import ICustomer from '../../interface/ICustomer';
 
-import FullCalendar from '@fullcalendar/react';
-import dayGridPlugin from '@fullcalendar/daygrid';
+// import FullCalendar from '@fullcalendar/react';
+// import dayGridPlugin from '@fullcalendar/daygrid';
 
 interface IAdminProps {
 	allBookings: IBooking[];
@@ -16,7 +16,7 @@ export default function Admin(props: IAdminProps) {
 
 	return (
 		<div>
-			<FullCalendar
+			{/* <FullCalendar
 				plugins={[dayGridPlugin]}
 				initialView='dayGridMonth'
 				events={[
@@ -25,7 +25,7 @@ export default function Admin(props: IAdminProps) {
 						date: '2020-08-25',
 					},
 				]}
-			/>
+			/> */}
 		</div>
 	);
 }

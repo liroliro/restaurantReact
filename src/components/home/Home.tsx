@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import Date from '../date/Date';
+import DateComponent from '../date/DateComponent'
 import Time from '../time/Time';
 import Guests from '../guests/Guests';
 
@@ -21,7 +21,7 @@ export default function Home() {
     // <form method='POST' action='http://localhost:8000/bookings'>
     <div>
       <div>
-        <Date />
+        <DateComponent />
       </div>
       <div>
         <Time sendTime={sendTimeFunction} />
