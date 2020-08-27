@@ -1,39 +1,50 @@
 import React, { useState } from 'react';
 
-import DateComponent from '../date/DateComponent'
+import DateComponent from '../date/DateComponent';
 import Time from '../time/Time';
 import Guests from '../guests/Guests';
 
 export default function Home() {
-  const [guestsNumber, setGuestsNumber] = useState(0);
+	const [guestsNumber, setGuestsNumber] = useState(0);
+	const [guestTime, setGuestTime] = useState(0);
 
-  const [guestTime, setGuestTime] = useState(0);
+	function updateGuestsNumber(x: number) {
+		setGuestsNumber(x);
+	}
 
-  function updateGuestsNumber(x: number) {
-    setGuestsNumber(x);
-  }
+	function sendTimeFunction(time: number) {
+		setGuestTime(time);
+	}
 
-  function sendTimeFunction(time: number) {
-    setGuestTime(time);
-  }
+	return (
+		// <form method='POST' action='http://localhost:8000/bookings'>
+		<div>
+			<label>
+				<input name='firstName' />
+			</label>
+			<label>
+				<input name='lastName' />
+			</label>
+			<label>
+				<input name='email' />
+			</label>
+			<label>
+				<input name='phone' />
+			</label>
+			<div>
+				<DateComponent />
+			</div>
+			<div>
+				<Time sendTime={sendTimeFunction} />
+			</div>
+			<div>
+				<Guests sendTheNumber={updateGuestsNumber} />
+			</div>
+			{/* <button formMethod='POST'>Skicka</button> */}
+			<p>{guestTime}</p>
+			<p>{guestsNumber}</p>
+		</div>
 
-  return (
-    // <form method='POST' action='http://localhost:8000/bookings'>
-    <div>
-      <div>
-        <DateComponent />
-      </div>
-      <div>
-        <Time sendTime={sendTimeFunction} />
-      </div>
-      <div>
-        <Guests sendTheNumber={updateGuestsNumber} />
-      </div>
-      {/* <button formMethod='POST'>Skicka</button> */}
-      <p>{guestTime}</p>
-      <p>{guestsNumber}</p>
-    </div>
-
-    // </form>
-  );
+		// </form>
+	);
 }
