@@ -1,29 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 interface ITimeProps {
-  sendTime(time: number): void;
+	sendTime(time: number): void;
 }
 
 export default function Time(props: ITimeProps) {
-  const [theTime, setTheTime] = useState(0);
+	const [theTime, setTheTime] = useState(0);
 
-  function handleClick(e: React.MouseEvent<HTMLButtonElement>) {
-    setTheTime(Number(e.currentTarget.value));
-    sendToParent();
-  }
+	useEffect(() => {
+		sendToParent();
+	}, [theTime]);
 
-  function sendToParent() {
-    props.sendTime(theTime);
-  }
+	function handleClick(e: React.MouseEvent<HTMLButtonElement>) {
+		setTheTime(Number(e.currentTarget.value));
+	}
 
-  return (
-    <div>
-      <button name='hej' value='18' onClick={handleClick}>
-        18:00
-      </button>
-      <button name='hej' value='21' onClick={handleClick}>
-        21:00
-      </button>
-    </div>
-  );
+	function sendToParent() {
+		props.sendTime(theTime);
+	}
+
+	return (
+		<div>
+			<button name='hej' value='18' onClick={handleClick} type='button'>
+				18:00
+			</button>
+			<button name='hej' value='21' onClick={handleClick} type='button'>
+				21:00
+			</button>
+		</div>
+	);
 }

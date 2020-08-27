@@ -1,56 +1,89 @@
-import React, { useState, useEffect, ChangeEvent } from 'react'
+import React, { useState, useEffect, ChangeEvent } from 'react';
+import Calendar from 'react-calendar';
 
-interface IDateProps{
-  sendDate(date: string): void;
-} 
+interface IDateProps {
+	sendDate(date: string): void;
+}
 
 export default function DateComponent(props: IDateProps) {
-    const [guestDate, setGuestDate] = useState("");
-    const [guestDateTomorrow, setGuestDateTomorrow] = useState("");
-    const [guestDateDayAfterTomorrow, setGuestDateDayAfterTomorrow] = useState("");
+	const [guestDate, setGuestDate] = useState('');
+	const [guestDateTomorrow, setGuestDateTomorrow] = useState('');
+	const [guestDateDayAfterTomorrow, setGuestDateDayAfterTomorrow] = useState(
+		''
+	);
 
-    const [clickedDate, setClickedDate] = useState("");
+	const [clickedDate, setClickedDate] = useState('');
 
-      useEffect(() => {
-          let date = new Date().getDate();
-          let month = new Date().getMonth();
+	const [calendar, setCalendar] = useState('');
 
-          let bookingDate = date + "/" + (month + 1);
-          let bookingDateTomorrow = (date + 1) + "/" + (month + 1);
-          let bookingDateDayAfterTomorrow = (date + 2) + "/" + (month + 1);
+	useEffect(() => {
+		let date = new Date().getDate();
+		let month = new Date().getMonth();
 
-          setGuestDate(bookingDate);
-          setGuestDateTomorrow(bookingDateTomorrow);
-          setGuestDateDayAfterTomorrow(bookingDateDayAfterTomorrow);
-      }, [])
+		let bookingDate = date + '/' + (month + 1);
+		let bookingDateTomorrow = date + 1 + '/' + (month + 1);
+		let bookingDateDayAfterTomorrow = date + 2 + '/' + (month + 1);
 
-      function handleClickedDate(e: React.MouseEvent<HTMLButtonElement>){
-        setClickedDate(e.currentTarget.value);
-        sendToParent();
-        console.log(clickedDate)
-      }
+		setGuestDate(bookingDate);
+		setGuestDateTomorrow(bookingDateTomorrow);
+		setGuestDateDayAfterTomorrow(bookingDateDayAfterTomorrow);
+	}, []);
 
-      function handleClickedDateCalendar(e: ChangeEvent<HTMLInputElement>){
-        setClickedDate(e.currentTarget.value);
-        sendToParent();
-        console.log(e.currentTarget.value)
-      }
+	useEffect(() => {
+		sendToParent();
+	}, [clickedDate]);
 
-      function sendToParent() {
-        props.sendDate(clickedDate);
-      }
+	function handleClickedDate(e: React.MouseEvent<HTMLButtonElement>) {
+		setClickedDate(e.currentTarget.value);
+	}
 
-      return (
-        <>
-          <div>
-            <button onClick={handleClickedDate} value={guestDate}>{guestDate}</button>
-            <button onClick={handleClickedDate} value={guestDateTomorrow}>{guestDateTomorrow}</button>
-            <button onClick={handleClickedDate} value={guestDateDayAfterTomorrow}>{guestDateDayAfterTomorrow}</button>
-            <div>
-              {/* Lägg till värdet till input som ska skickas till föräldern */}
-              <input type='date' id='date' name='date' onChange={handleClickedDateCalendar}/>
-            </div>
-          </div>
-        </>
-      );
+	function handleClickedDateCalendar(e: ChangeEvent<HTMLInputElement>) {
+		setClickedDate(e.currentTarget.value);
+		sendToParent();
+		console.log(e.currentTarget.value);
+	}
+
+	function sendToParent() {
+		props.sendDate(clickedDate);
+	}
+
+	function updateCalendar(e: ChangeEvent) {
+		setCalendar(e.target.value);
+	}
+
+	return (
+		<>
+			<div>
+				<button onClick={handleClickedDate} value={guestDate} type='button'>
+					{guestDate}
+				</button>
+				<button
+					onClick={handleClickedDate}
+					value={guestDateTomorrow}
+					type='button'
+				>
+					{guestDateTomorrow}
+				</button>
+				<button
+					onClick={handleClickedDate}
+					value={guestDateDayAfterTomorrow}
+					type='button'
+				>
+					{guestDateDayAfterTomorrow}
+				</button>
+				<div>
+					{/* Lägg till värdet till input som ska skickas till föräldern */}
+					<input
+						type='date'
+						id='date'
+						name='date'
+						onChange={handleClickedDateCalendar}
+					/>
+				</div>
+				<div>
+					<Calendar onChange={updateCalendar} value={calendar} />
+				</div>
+			</div>
+		</>
+	);
 }

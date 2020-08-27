@@ -1,64 +1,38 @@
-import React, { useState, ChangeEvent } from 'react';
+import React, { useState, useEffect } from 'react';
 
 interface IGuestsProps {
-  sendTheNumber(theNumber: number): void;
+	sendTheNumber(theNumber: number): void;
 }
 
 export default function Guests(props: IGuestsProps) {
-  const [selectedOption, setSelectedOption] = useState(0);
+	const [selectedOption, setSelectedOption] = useState(0);
 
-  function handleOptions(e: ChangeEvent<HTMLInputElement>) {
-    setSelectedOption(Number(e.target.value));
-  }
+	useEffect(() => {
+		sendToParent();
+	}, [selectedOption]);
 
-  function sendToParent() {
-    props.sendTheNumber(selectedOption);
-  }
+	function handleOptions(e: React.MouseEvent<HTMLButtonElement>) {
+		setSelectedOption(Number(e.currentTarget.value));
+	}
 
-  return (
-    <>
-      <p>Guests works</p>
-      <div>
-        <label>
-          1
-          <input
-            type='radio'
-            name='guests'
-            value='1'
-            onChange={handleOptions}
-          />
-        </label>
-        <label>
-          2
-          <input
-            type='radio'
-            name='guests'
-            value='2'
-            onChange={handleOptions}
-          />
-        </label>
-        <label>
-          3
-          <input
-            type='radio'
-            name='guests'
-            value='3'
-            onChange={handleOptions}
-          />
-        </label>
-        <label>
-          4
-          <input
-            type='radio'
-            name='guests'
-            value='4'
-            onChange={handleOptions}
-          />
-        </label>
-      </div>
-      <button type='button' onClick={sendToParent}>
-        Skicka
-      </button>
-    </>
-  );
+	function sendToParent() {
+		props.sendTheNumber(selectedOption);
+	}
+
+	return (
+		<div>
+			<button value='1' onClick={handleOptions} type='button'>
+				1
+			</button>
+			<button value='2' onClick={handleOptions} type='button'>
+				2
+			</button>
+			<button value='3' onClick={handleOptions} type='button'>
+				3
+			</button>
+			<button value='4' onClick={handleOptions} type='button'>
+				4
+			</button>
+		</div>
+	);
 }
