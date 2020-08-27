@@ -9,6 +9,8 @@ export default function Home() {
 
   const [guestTime, setGuestTime] = useState(0);
 
+  const [guestDate, setGuestDate] = useState("")
+
   function updateGuestsNumber(x: number) {
     setGuestsNumber(x);
   }
@@ -17,11 +19,15 @@ export default function Home() {
     setGuestTime(time);
   }
 
+  function sendDateFunction(date: string){
+    setGuestDate(date);
+  }
+
   return (
     // <form method='POST' action='http://localhost:8000/bookings'>
     <div>
       <div>
-        <DateComponent />
+        <DateComponent sendDate={sendDateFunction}/>
       </div>
       <div>
         <Time sendTime={sendTimeFunction} />
@@ -32,6 +38,7 @@ export default function Home() {
       {/* <button formMethod='POST'>Skicka</button> */}
       <p>{guestTime}</p>
       <p>{guestsNumber}</p>
+      <p>{guestDate}</p>
     </div>
 
     // </form>
