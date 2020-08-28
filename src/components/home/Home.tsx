@@ -4,8 +4,13 @@ import DateComponent from '../date/DateComponent';
 import Time from '../time/Time';
 import Guests from '../guests/Guests';
 import axios from 'axios';
+import IBooking from '../../interface/IBooking';
 
-export default function Home() {
+interface IHomeProps {
+	allBookings: IBooking[];
+}
+
+export default function Home(props: IHomeProps) {
 	const [guestsNumber, setGuestsNumber] = useState(0);
 	const [guestTime, setGuestTime] = useState(0);
 	const [guestDate, setGuestDate] = useState('');
@@ -15,6 +20,8 @@ export default function Home() {
 	const [email, setEmail] = useState('');
 	const [phone, setPhone] = useState('');
 	const [message, setMessage] = useState('');
+	const [tables, setTables] = useState(true);
+	const [showTables, setShowTables] = useState(Boolean);
 
 	function updateGuestsNumber(x: number) {
 		setGuestsNumber(x);
@@ -66,24 +73,28 @@ export default function Home() {
 			});
 	}
 
+	function checkForAvaliableTables() {
+		let table: number = 0;
+
+		const totalBookings = props.allBookings.filter((b) => {
+			if (b.date === guestDate && b.time === guestTime) {
+				return b;
+			}
+		});
+
+		totalBookings.map((b) => {
+			let amountOfTables = Math.ceil(b.guests / 6);
+			return (table += amountOfTables);
+		});
+
+		setTables(false);
+
+		table < 15 ? setShowTables(true) : setShowTables(false);
+	}
+
 	return (
 		<form onSubmit={handleSubmit}>
 			<div>
-				<label>
-					<input name='firstName' onChange={updateFirstName} />
-				</label>
-				<label>
-					<input name='lastName' onChange={updateLastName} />
-				</label>
-				<label>
-					<input name='email' onChange={updateEmail} />
-				</label>
-				<label>
-					<input name='phone' onChange={updatePhone} />
-				</label>
-				<label>
-					<textarea onChange={updateMessage} />
-				</label>
 				<div>
 					<DateComponent sendDate={sendDateFunction} />
 				</div>
@@ -93,8 +104,34 @@ export default function Home() {
 				<div>
 					<Guests sendTheNumber={updateGuestsNumber} />
 				</div>
+				<button type='button' onClick={checkForAvaliableTables}>
+					Kolla om det finns bord
+				</button>
+				{tables ? (
+					''
+				) : showTables ? (
+					<div>
+						<label>
+							<input name='firstName' onChange={updateFirstName} />
+						</label>
+						<label>
+							<input name='lastName' onChange={updateLastName} />
+						</label>
+						<label>
+							<input name='email' onChange={updateEmail} />
+						</label>
+						<label>
+							<input name='phone' onChange={updatePhone} />
+						</label>
+						<label>
+							<textarea onChange={updateMessage} />
+						</label>
+						<button type='submit'>Post</button>
+					</div>
+				) : (
+					<p>Det är slut på bord.</p>
+				)}
 			</div>
-			<button type='submit'>Post</button>
 		</form>
 	);
 }

@@ -1,5 +1,7 @@
-import React, { useState, useEffect, ChangeEvent } from 'react';
+import React, { useState, useEffect } from 'react';
+
 import Calendar from 'react-calendar';
+import 'react-calendar/dist/Calendar.css';
 
 interface IDateProps {
 	sendDate(date: string): void;
@@ -13,8 +15,6 @@ export default function DateComponent(props: IDateProps) {
 	);
 
 	const [clickedDate, setClickedDate] = useState('');
-
-	const [calendar, setCalendar] = useState('');
 
 	useEffect(() => {
 		let date = new Date().getDate();
@@ -37,18 +37,15 @@ export default function DateComponent(props: IDateProps) {
 		setClickedDate(e.currentTarget.value);
 	}
 
-	function handleClickedDateCalendar(e: ChangeEvent<HTMLInputElement>) {
-		setClickedDate(e.currentTarget.value);
-		sendToParent();
-		console.log(e.currentTarget.value);
-	}
-
 	function sendToParent() {
 		props.sendDate(clickedDate);
 	}
 
-	function updateCalendar(e: ChangeEvent) {
-		setCalendar(e.target.value);
+	function updateCalendar(e: Date) {
+		let date = e.getDate();
+		let month = e.getMonth();
+		let bookingDate = date + '/' + (month + 1);
+		setClickedDate(bookingDate);
 	}
 
 	return (
@@ -72,16 +69,7 @@ export default function DateComponent(props: IDateProps) {
 					{guestDateDayAfterTomorrow}
 				</button>
 				<div>
-					{/* Lägg till värdet till input som ska skickas till föräldern */}
-					<input
-						type='date'
-						id='date'
-						name='date'
-						onChange={handleClickedDateCalendar}
-					/>
-				</div>
-				<div>
-					<Calendar onChange={updateCalendar} value={calendar} />
+					<Calendar onClickDay={updateCalendar} />
 				</div>
 			</div>
 		</>

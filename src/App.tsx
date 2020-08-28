@@ -10,26 +10,10 @@ import IBooking from './interface/IBooking';
 import ICustomer from './interface/ICustomer';
 
 function App() {
-	let defaultValue: IBooking[] = [];
+	let defaultBookingValue: IBooking[] = [];
 	let defaultCustomerValue: ICustomer[] = [];
-	const [bookings, setBookings] = useState(defaultValue);
+	const [bookings, setBookings] = useState(defaultBookingValue);
 	const [customers, setCustomer] = useState(defaultCustomerValue);
-
-	// useEffect(()=> {
-	//   axios.post('http://localhost:8000/', {
-	//     firstName: 'Hanna',
-	//     lastName: 'Goldhammer',
-	//     email: 'hanna@gmail.com',
-	//     phone: 13371379012,
-	//     date: '21-12-22',
-	//     time: '21.00',
-	//     guests: 133,
-	//     message: 'jättemkt allergier',
-	//   })
-	//   .then(function (response) {
-	//     console.log(response);
-	//   })
-	// }, [])
 
 	useEffect(() => {
 		axios.get('http://localhost:8000/bookings').then((res) => {
@@ -64,7 +48,7 @@ function App() {
 						<Admin allBookings={bookings} allCustomers={customers} />
 					</Route>
 					<Route exact path='/'>
-						<Home />
+						<Home allBookings={bookings} />
 					</Route>
 				</Switch>
 			</div>
