@@ -17,14 +17,15 @@ export default function DateComponent(props: IDateProps) {
 	const [clickedDate, setClickedDate] = useState('');
 
 	useEffect(() => {
-		let date = new Date().getDate();
+		let date = new Date();
+		let dateString = date.toLocaleDateString(undefined, {day:'2-digit'}) + ' ' + date.toLocaleDateString(undefined, {month:'short'});
 		let month = new Date().getMonth();
 
-		let bookingDate = date + '/' + (month + 1);
-		let bookingDateTomorrow = date + 1 + '/' + (month + 1);
-		let bookingDateDayAfterTomorrow = date + 2 + '/' + (month + 1);
+		let bookingDate = date.getDate() + '/' + (month + 1);
+		let bookingDateTomorrow = dateString + 1 + '/' + (month + 1);
+		let bookingDateDayAfterTomorrow = date.setDate(date.getDate() + 2) + '/' + (month + 1);
 
-		setGuestDate(bookingDate);
+		setGuestDate(dateString);
 		setGuestDateTomorrow(bookingDateTomorrow);
 		setGuestDateDayAfterTomorrow(bookingDateDayAfterTomorrow);
 	}, []);
