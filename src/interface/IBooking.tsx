@@ -1,5 +1,5 @@
 export default interface IBooking {
-	id: string;
+	_id: string;
 	date: string;
 	time: number;
 	guests: number;

@@ -15,19 +15,32 @@ export default function DateComponent(props: IDateProps) {
 	);
 
 	const [clickedDate, setClickedDate] = useState('');
+	const [showCalendar, setShowCalendar] = useState(false);
 
 	useEffect(() => {
 		let date = new Date();
-		let dateString = date.toLocaleDateString(undefined, {day:'2-digit'}) + ' ' + date.toLocaleDateString(undefined, {month:'short'});
-		let month = new Date().getMonth();
+		let dateString =
+			date.toLocaleDateString(undefined, { day: '2-digit' }) +
+			' ' +
+			date.toLocaleDateString(undefined, { month: 'short' });
 
-		let bookingDate = date.getDate() + '/' + (month + 1);
-		let bookingDateTomorrow = dateString + 1 + '/' + (month + 1);
-		let bookingDateDayAfterTomorrow = date.setDate(date.getDate() + 2) + '/' + (month + 1);
+		let tomorrow = new Date();
+		tomorrow.setDate(tomorrow.getDate() + 1);
+		let tomorrowsDate =
+			tomorrow.toLocaleDateString(undefined, { day: '2-digit' }) +
+			' ' +
+			tomorrow.toLocaleDateString(undefined, { month: 'short' });
+
+		let dayAfterTomorrow = new Date();
+		dayAfterTomorrow.setDate(dayAfterTomorrow.getDate() + 2);
+		let dayAfterTomorrowsDate =
+			dayAfterTomorrow.toLocaleDateString(undefined, { day: '2-digit' }) +
+			' ' +
+			dayAfterTomorrow.toLocaleDateString(undefined, { month: 'short' });
 
 		setGuestDate(dateString);
-		setGuestDateTomorrow(bookingDateTomorrow);
-		setGuestDateDayAfterTomorrow(bookingDateDayAfterTomorrow);
+		setGuestDateTomorrow(tomorrowsDate);
+		setGuestDateDayAfterTomorrow(dayAfterTomorrowsDate);
 	}, []);
 
 	useEffect(() => {
@@ -43,15 +56,24 @@ export default function DateComponent(props: IDateProps) {
 	}
 
 	function updateCalendar(e: Date) {
-		let date = e.getDate();
-		let month = e.getMonth();
-		let bookingDate = date + '/' + (month + 1);
-		setClickedDate(bookingDate);
+		let dateString =
+			e.toLocaleDateString(undefined, { day: '2-digit' }) +
+			' ' +
+			e.toLocaleDateString(undefined, { month: 'short' });
+
+		setClickedDate(dateString);
 	}
 
 	return (
 		<>
 			<div>
+				<div>
+					<i
+						className='fas fa-calendar-week'
+						onClick={() => setShowCalendar(true)}
+					></i>
+					{showCalendar ? <Calendar onClickDay={updateCalendar} /> : ''}
+				</div>
 				<button onClick={handleClickedDate} value={guestDate} type='button'>
 					{guestDate}
 				</button>
@@ -69,9 +91,6 @@ export default function DateComponent(props: IDateProps) {
 				>
 					{guestDateDayAfterTomorrow}
 				</button>
-				<div>
-					<Calendar onClickDay={updateCalendar} />
-				</div>
 			</div>
 		</>
 	);
