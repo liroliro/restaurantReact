@@ -75,7 +75,7 @@ export default function Home(props: IHomeProps) {
 
 	function checkForAvaliableTables() {
 		let table: number = 0;
-
+ try {
 		const totalBookings = props.allBookings.filter((b) => {
 			if (b.date === guestDate && b.time === guestTime) {
 				return b;
@@ -90,6 +90,10 @@ export default function Home(props: IHomeProps) {
 		setTables(false);
 
 		table < 15 ? setShowTables(true) : setShowTables(false);
+	}
+	catch(err) {
+		console.log(err)
+	}
 	}
 
 	return (

@@ -32,6 +32,9 @@ export default function Admin(props: IAdminProps, state: IAdminResult) {
 	}
 
 	function checkForAvaliableTables() {
+
+	console.log(props.allBookings)
+	try {
 		const totalBookings = props.allBookings.filter((b) => {
 			if (b.date === clickedDate) {
 				return b;
@@ -40,6 +43,10 @@ export default function Admin(props: IAdminProps, state: IAdminResult) {
 
 		setBookings(totalBookings);
 		setShowBookings(true);
+	}
+	catch( err) {
+		console.log(err)
+	}
 	}
 
 	function handleSubmit(e: FormEvent) {
