@@ -87,7 +87,7 @@ export default function Admin(props: IAdminProps, state: IAdminResult) {
 											<td>{m.time}</td>
 											<td>{m.guests}</td>
 											<td>{m.message}</td>
-											{/* <td><button onClick={handleDelete(m._id)}>Ta bort bokning</button></td> */}
+											{/* <td><button onClick={() => handleSubmit(m._id)}>Ta bort bokning</button></td> */}
 											<td><button onClick={() => {handleDelete(m._id)} }>Ta bort bokning</button></td>
 										</tr>
 									</tbody>
@@ -97,12 +97,7 @@ export default function Admin(props: IAdminProps, state: IAdminResult) {
 				</table>
 			</div>
 
-			{/* <form onSubmit={handleSubmit}>
-				<button>Update</button>
-			</form>
-			<form onSubmit={handleDelete}>
-				<button>Delete</button>
-			</form> */}
+			
 		</>
 	);
 }

@@ -27,6 +27,7 @@ export default function Home(props: IHomeProps) {
 		setGuestsNumber(x);
 	}
 
+
 	function sendTimeFunction(time: number) {
 		setGuestTime(time);
 	}
@@ -90,9 +91,13 @@ export default function Home(props: IHomeProps) {
 		setTables(false);
 
 		table < 15 ? setShowTables(true) : setShowTables(false);
+
+
 	}
 
 	return (
+
+
 		<form onSubmit={handleSubmit}>
 			<div>
 				<div>
@@ -131,6 +136,15 @@ export default function Home(props: IHomeProps) {
 				) : (
 							<p>Det är slut på bord.</p>
 						)}
+			</div>
+			<div>
+
+				<p>{guestDate}</p>
+				<p>{guestTime}</p>
+				<p>{guestsNumber}</p>
+
+
+
 			</div>
 		</form>
 	);

@@ -24,7 +24,7 @@ export default function Guests(props: IGuestsProps) {
 			<button value='1' onClick={handleOptions} type='button'>
 				1
 			</button>
-			<button value='2' onClick={handleOptions} type='button'>
+			<button value='2' onClick={handleOptions} type='button' >
 				2
 			</button>
 			<button value='3' onClick={handleOptions} type='button'>
@@ -51,7 +51,7 @@ export default function Guests(props: IGuestsProps) {
 			<button value='10' onClick={handleOptions} type='button'>
 				10
 			</button>
-			<button value='11' onClick={handleOptions} type='button'>
+			<button value='11' onClick={handleOptions} type='button' >
 				11
 			</button>
 			<button value='12' onClick={handleOptions} type='button'>
