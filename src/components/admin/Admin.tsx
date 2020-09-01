@@ -49,11 +49,17 @@ export default function Admin(props: IAdminProps, state: IAdminResult) {
 		});
 	}
 
-	function handleDelete(e: FormEvent) {
-		e.preventDefault();
-		axios.delete('http://localhost:8000/delete', {}).then(function (response) {
+
+	function handleDelete(id: string) {
+		console.log("Du försöker ta bort id: " + id);
+		axios.delete('http://localhost:8000/delete/' + id, {}).then(function (response) {
+			bookings.map((m) => {
+
+			})	
+	
 			console.log(response);
 		});
+		// e.preventDefault();
 	}
 
 	return (
@@ -81,6 +87,8 @@ export default function Admin(props: IAdminProps, state: IAdminResult) {
 											<td>{m.time}</td>
 											<td>{m.guests}</td>
 											<td>{m.message}</td>
+											{/* <td><button onClick={handleDelete(m._id)}>Ta bort bokning</button></td> */}
+											<td><button onClick={() => {handleDelete(m._id)} }>Ta bort bokning</button></td>
 										</tr>
 									</tbody>
 								);
@@ -89,12 +97,12 @@ export default function Admin(props: IAdminProps, state: IAdminResult) {
 				</table>
 			</div>
 
-			<form onSubmit={handleSubmit}>
+			{/* <form onSubmit={handleSubmit}>
 				<button>Update</button>
 			</form>
 			<form onSubmit={handleDelete}>
 				<button>Delete</button>
-			</form>
+			</form> */}
 		</>
 	);
 }
