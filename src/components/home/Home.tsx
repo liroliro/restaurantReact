@@ -27,6 +27,7 @@ export default function Home(props: IHomeProps) {
 		setGuestsNumber(x);
 	}
 
+
 	function sendTimeFunction(time: number) {
 		setGuestTime(time);
 	}
@@ -90,9 +91,13 @@ export default function Home(props: IHomeProps) {
 		setTables(false);
 
 		table < 15 ? setShowTables(true) : setShowTables(false);
+
+
 	}
 
 	return (
+
+
 		<form onSubmit={handleSubmit}>
 			<div>
 				<div>
@@ -112,25 +117,34 @@ export default function Home(props: IHomeProps) {
 				) : showTables ? (
 					<div>
 						<label>
-							<input name='firstName' onChange={updateFirstName} />
+							<input name='firstName' onChange={updateFirstName} placeholder="Förnamn" />
 						</label>
 						<label>
-							<input name='lastName' onChange={updateLastName} />
+							<input name='lastName' onChange={updateLastName} placeholder="Efternamn" />
 						</label>
 						<label>
-							<input name='email' onChange={updateEmail} />
+							<input name='email' onChange={updateEmail} placeholder="Email" />
 						</label>
 						<label>
-							<input name='phone' onChange={updatePhone} />
+							<input name='phone' onChange={updatePhone} placeholder="Telefonnummer" />
 						</label>
 						<label>
-							<textarea onChange={updateMessage} />
+							<textarea onChange={updateMessage} placeholder="Meddelande" />
 						</label>
 						<button type='submit'>Post</button>
 					</div>
 				) : (
-					<p>Det är slut på bord.</p>
-				)}
+							<p>Det är slut på bord.</p>
+						)}
+			</div>
+			<div>
+
+				<p>{guestDate}</p>
+				<p>{guestTime}</p>
+				<p>{guestsNumber}</p>
+
+
+
 			</div>
 		</form>
 	);

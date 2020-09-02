@@ -50,12 +50,44 @@ export default function Admin(props: IAdminProps, state: IAdminResult) {
 			</div>
 
 			<div>
+<<<<<<< HEAD
 				{showBookings
 					? bookings.map((m) => {
 							return <FormCollector data={m} key={m._id} />;
 					  })
 					: null}
 			</div>
+=======
+				<table key='Table'>
+					<thead>
+						<tr>
+							<th key='date'>Datum</th>
+							<th key='time'>Tid</th>
+							<th key='guests'>Antal</th>
+							<th key='message'>Meddelande</th>
+						</tr>
+					</thead>
+					{showBookings
+						? bookings.map((m) => {
+								return (
+									<tbody key={m._id}>
+										<tr>
+											<td>{m.date}</td>
+											<td>{m.time}</td>
+											<td>{m.guests}</td>
+											<td>{m.message}</td>
+											{/* <td><button onClick={() => handleSubmit(m._id)}>Ta bort bokning</button></td> */}
+											<td><button onClick={() => {handleDelete(m._id)} }>Ta bort bokning</button></td>
+										</tr>
+									</tbody>
+								);
+						  })
+						: null}
+				</table>
+			</div>
+
+			
+>>>>>>> ba839a73b80886bc4d32c0c6529a645994b642d7
 		</>
 	);
 }
