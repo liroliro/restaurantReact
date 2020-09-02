@@ -43,8 +43,6 @@ export default function Admin(
 		setBookings(totalBookings);
 		setShowBookings(true);
 	}
-	
-	}
 
 	function handleDelete(id: string) {
 		axios.delete(`http://localhost:8000/delete/${id}`, {}).then((response) => {
