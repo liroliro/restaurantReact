@@ -1,6 +1,7 @@
-import React, { useState, useEffect, FormEvent, ChangeEvent } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 
+import './Admin.scss';
 import IBooking from '../../interface/IBooking';
 import ICustomer from '../../interface/ICustomer';
 import Calendar from 'react-calendar';
@@ -15,47 +16,72 @@ interface IAdminResult {
 	success: IBooking[];
 }
 
-export default function Admin(props: IAdminProps, state: IAdminResult) {
-	const [clickedDate, setClickedDate] = useState('');
-	const [bookings, setBookings] = useState(state.success);
+export default function Admin(
+	props: IAdminProps,
+	confirmedBookings: IAdminResult
+) {
+	const [bookings, setBookings] = useState(confirmedBookings.success);
 	const [showBookings, setShowBookings] = useState(false);
-
-	useEffect(() => {
-		checkForAvaliableTables();
-	}, [clickedDate]);
 
 	function updateCalendar(e: Date) {
 		let dateString =
 			e.toLocaleDateString(undefined, { day: '2-digit' }) +
 			' ' +
 			e.toLocaleDateString(undefined, { month: 'short' });
-		setClickedDate(dateString);
+
+		checkForAvaliableTables(dateString);
 	}
 
-	function checkForAvaliableTables() {
+	function checkForAvaliableTables(dateString: string) {
 		const totalBookings = props.allBookings.filter((b) => {
-			if (b.date === clickedDate) {
+			if (b.date === dateString) {
 				return b;
 			}
+			return null;
 		});
 
 		setBookings(totalBookings);
 		setShowBookings(true);
 	}
 
+	function handleDelete(id: string) {
+		axios.delete(`http://localhost:8000/delete/${id}`, {}).then((response) => {
+			const updatedBookings = bookings.filter((b) => {
+				if (b._id !== id) {
+					return b;
+				}
+				return null;
+			});
+
+			setBookings(updatedBookings);
+		});
+	}
+
 	return (
-		<>
+		<div className='header'>
+			<h2 className='header-text'>Välkommen till DinnerSpace</h2>
 			<div>
 				<Calendar onClickDay={updateCalendar} />
 			</div>
-
 			<div>
+				<div className='form-container'>
+					<h2 className='adminHeading'>Datum</h2>
+					<h2 className='adminHeading'>Tid</h2>
+					<h2 className='adminHeading'>Antal</h2>
+					<h2 className='adminHeading'>Meddelande</h2>
+				</div>
 				{showBookings
 					? bookings.map((m) => {
-							return <FormCollector data={m} key={m._id} />;
+							return (
+								<FormCollector
+									data={m}
+									key={m._id}
+									handleDelete={handleDelete}
+								/>
+							);
 					  })
 					: null}
 			</div>
-		</>
+		</div>
 	);
 }

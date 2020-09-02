@@ -1,10 +1,12 @@
-import React, { useState, ChangeEvent, FormEvent, useEffect } from 'react';
+import React, { useState, ChangeEvent, FormEvent } from 'react';
 import IBooking from '../../interface/IBooking';
 
 import axios from 'axios';
+import './FormCollector.scss';
 
 interface IFormCollectorProps {
 	data: IBooking;
+	handleDelete(id: string): void;
 }
 
 export default function FormCollector(props: IFormCollectorProps) {
@@ -48,43 +50,50 @@ export default function FormCollector(props: IFormCollectorProps) {
 			});
 	}
 
-	function handleDelete(id: string) {
-		console.log('Du försöker ta bort id: ' + id);
-
-		axios.delete(`http://localhost:8000/delete/${id}`, {}).then((response) => {
-			console.log(response);
-		});
-
-		window.location.reload(true);
+	function sendDelete(id: string) {
+		props.handleDelete(id);
 	}
 
 	return (
 		<form onSubmit={handleUpdate}>
-			<input value={bookingDate} key={props.data.date} onChange={handleDate} />
+			<input
+				value={bookingDate}
+				key={props.data.date}
+				onChange={handleDate}
+				className='form-input'
+			/>
 
-			<input value={bookingTime} key={props.data.time} onChange={handleTime} />
+			<input
+				value={bookingTime}
+				key={props.data.time}
+				onChange={handleTime}
+				className='form-input'
+			/>
 
 			<input
 				value={bookingGuests}
 				key={props.data.guests}
 				onChange={handleGuests}
+				className='form-input'
 			/>
 
 			<input
 				value={bookingMessage}
 				key={props.data.message}
 				onChange={handleMessage}
+				className='form-input'
 			/>
-			<button
-				onClick={() => {
-					handleDelete(props.data._id);
-				}}
-				type='button'
-			>
-				Ta bort bokning
+			<span>
+				<i
+					className='fas fa-trash-alt'
+					onClick={() => {
+						sendDelete(props.data._id);
+					}}
+				></i>
+			</span>
+			<button type='submit' className='edit-button'>
+				<i className='fas fa-edit fa-lg'></i>
 			</button>
-
-			<button type='submit'>Uppdatera bokning</button>
 		</form>
 	);
 }
