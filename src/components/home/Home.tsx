@@ -1,4 +1,4 @@
-import React, { useState, FormEvent, ChangeEvent } from 'react';
+import React, { useState, FormEvent, ChangeEvent, useEffect } from 'react';
 
 import DateComponent from '../date/DateComponent';
 import Time from '../time/Time';
@@ -21,10 +21,19 @@ export default function Home(props: IHomeProps) {
 	const [phone, setPhone] = useState('');
 	const [message, setMessage] = useState('');
 	const [tables, setTables] = useState(true);
+	const [validation, setValidation] = useState(false);
 	const [showTables, setShowTables] = useState(Boolean);
 
-	function updateGuestsNumber(x: number) {
-		setGuestsNumber(x);
+	useEffect(() => {
+		if (guestTime === 0 || guestsNumber === 0 || guestDate === '') {
+			return;
+		} else {
+			setValidation(true);
+		}
+	}, [guestTime, guestsNumber, guestDate]);
+
+	function updateGuestsNumber(number: number) {
+		setGuestsNumber(number);
 	}
 
 	function sendTimeFunction(time: number) {
@@ -68,7 +77,7 @@ export default function Home(props: IHomeProps) {
 				guests: guestsNumber,
 				message,
 			})
-			.then(function (response) {
+			.then((response) => {
 				console.log(response);
 			});
 	}
@@ -80,6 +89,7 @@ export default function Home(props: IHomeProps) {
 			if (b.date === guestDate && b.time === guestTime) {
 				return b;
 			}
+			return null;
 		});
 
 		totalBookings.map((b) => {
@@ -96,46 +106,90 @@ export default function Home(props: IHomeProps) {
 	}
 	}
 
+	const validatedButton = (
+		<button
+			type='button'
+			className='Btn-search'
+			onClick={checkForAvaliableTables}
+		>
+			Sök efter lediga bord
+		</button>
+	);
+
+	const unvalidatedButton = (
+		<button disabled className='Btn-search'>
+			Sök efter lediga bord
+		</button>
+	);
+
 	return (
-		<form onSubmit={handleSubmit}>
-			<div>
+		<div className='header'>
+			<h2 className='header-text'>Välkommen till DinnerSpace</h2>
+			<form onSubmit={handleSubmit}>
 				<div>
-					<DateComponent sendDate={sendDateFunction} />
-				</div>
-				<div>
-					<Time sendTime={sendTimeFunction} />
-				</div>
-				<div>
-					<Guests sendTheNumber={updateGuestsNumber} />
-				</div>
-				<button type='button' onClick={checkForAvaliableTables}>
-					Kolla om det finns bord
-				</button>
-				{tables ? (
-					''
-				) : showTables ? (
 					<div>
-						<label>
-							<input name='firstName' onChange={updateFirstName} placeholder="Förnamn" />
-						</label>
-						<label>
-							<input name='lastName' onChange={updateLastName} placeholder="Efternamn" />
-						</label>
-						<label>
-							<input name='email' onChange={updateEmail} placeholder="Email" />
-						</label>
-						<label>
-							<input name='phone' onChange={updatePhone} placeholder="Telefonnummer" />
-						</label>
-						<label>
-							<textarea onChange={updateMessage} placeholder="Meddelande" />
-						</label>
-						<button type='submit'>Post</button>
+						<span>Välj ett datum</span>
+						<DateComponent sendDate={sendDateFunction} />
 					</div>
-				) : (
-							<p>Det är slut på bord.</p>
-						)}
-			</div>
-		</form>
+					<div>
+						<span>Välj en tid</span>
+						<Time sendTime={sendTimeFunction} />
+					</div>
+					<span>Hur många gäster</span>
+					<div className='guestHome'>
+						<Guests sendTheNumber={updateGuestsNumber} />
+					</div>
+					{validation ? validatedButton : unvalidatedButton}
+					{tables ? (
+						''
+					) : showTables ? (
+						<div>
+							<div className='bokingConfirm'>
+								Du vill boka bord den {guestDate} klockan {guestTime}.00 för{' '}
+								{guestsNumber} {''}personer.
+							</div>
+							<div className='bokingConfirm'>
+								{' '}
+								Fyll i dina uppgifter för att genomföra bokningen.
+							</div>
+							<label>
+								<input
+									name='firstName'
+									onChange={updateFirstName}
+									placeholder='Förnamn'
+								/>
+							</label>
+							<label>
+								<input
+									name='lastName'
+									onChange={updateLastName}
+									placeholder='Efternamn'
+								/>
+							</label>
+							<label>
+								<input
+									name='email'
+									onChange={updateEmail}
+									placeholder='Email'
+								/>
+							</label>
+							<label>
+								<input
+									name='phone'
+									onChange={updatePhone}
+									placeholder='Telefonnummer'
+								/>
+							</label>
+							<label>
+								<textarea onChange={updateMessage} placeholder='Meddelande' />
+							</label>
+							<button type='submit'>Post</button>
+						</div>
+					) : (
+						<p>Det är slut på bord.</p>
+					)}
+				</div>
+			</form>
+		</div>
 	);
 }

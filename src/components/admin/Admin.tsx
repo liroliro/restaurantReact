@@ -1,9 +1,11 @@
-import React, { useState, useEffect, FormEvent } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 
+import './Admin.scss';
 import IBooking from '../../interface/IBooking';
 import ICustomer from '../../interface/ICustomer';
 import Calendar from 'react-calendar';
+import FormCollector from '../formCollector/FormCollector';
 
 interface IAdminProps {
 	allBookings: IBooking[];
@@ -14,102 +16,74 @@ interface IAdminResult {
 	success: IBooking[];
 }
 
-export default function Admin(props: IAdminProps, state: IAdminResult) {
-	const [clickedDate, setClickedDate] = useState('');
-	const [bookings, setBookings] = useState(state.success);
+export default function Admin(
+	props: IAdminProps,
+	confirmedBookings: IAdminResult
+) {
+	const [bookings, setBookings] = useState(confirmedBookings.success);
 	const [showBookings, setShowBookings] = useState(false);
-
-	useEffect(() => {
-		checkForAvaliableTables();
-	}, [clickedDate]);
 
 	function updateCalendar(e: Date) {
 		let dateString =
 			e.toLocaleDateString(undefined, { day: '2-digit' }) +
 			' ' +
 			e.toLocaleDateString(undefined, { month: 'short' });
-		setClickedDate(dateString);
+
+		checkForAvaliableTables(dateString);
 	}
 
-	function checkForAvaliableTables() {
-
-	console.log(props.allBookings)
-	try {
+	function checkForAvaliableTables(dateString: string) {
 		const totalBookings = props.allBookings.filter((b) => {
-			if (b.date === clickedDate) {
+			if (b.date === dateString) {
 				return b;
 			}
+			return null;
 		});
 
 		setBookings(totalBookings);
 		setShowBookings(true);
 	}
-	catch( err) {
-		console.log(err)
+	
 	}
-	}
-
-	function handleSubmit(e: FormEvent) {
-		e.preventDefault();
-		axios.put('http://localhost:8000/update', {}).then(function (response) {
-			console.log(response);
-		});
-	}
-
 
 	function handleDelete(id: string) {
-		console.log("Du försöker ta bort id: " + id);
-		axios.delete('http://localhost:8000/delete/' + id, {}).then(function (response) {
-			bookings.map((m) => {
+		axios.delete(`http://localhost:8000/delete/${id}`, {}).then((response) => {
+			const updatedBookings = bookings.filter((b) => {
+				if (b._id !== id) {
+					return b;
+				}
+				return null;
+			});
 
-			})	
-	
-			console.log(response);
+			setBookings(updatedBookings);
 		});
-		// e.preventDefault();
 	}
 
 	return (
-		<>
+		<div className='header'>
+			<h2 className='header-text'>Välkommen till DinnerSpace</h2>
 			<div>
 				<Calendar onClickDay={updateCalendar} />
 			</div>
-
 			<div>
-				<table key='Table'>
-					<thead>
-						<tr>
-							<th key='date'>Datum</th>
-							<th key='time'>Tid</th>
-							<th key='guests'>Antal</th>
-							<th key='message'>Meddelande</th>
-						</tr>
-					</thead>
-					{showBookings
-						? bookings.map((m) => {
-								return (
-									<tbody key={m._id}>
-										<tr>
-											<td>{m.date}</td>
-											<td>{m.time}</td>
-											<td>{m.guests}</td>
-											<td>{m.message}</td>
-											{/* <td><button onClick={handleDelete(m._id)}>Ta bort bokning</button></td> */}
-											<td><button onClick={() => {handleDelete(m._id)} }>Ta bort bokning</button></td>
-										</tr>
-									</tbody>
-								);
-						  })
-						: null}
-				</table>
+				<div className='form-container'>
+					<h2 className='adminHeading'>Datum</h2>
+					<h2 className='adminHeading'>Tid</h2>
+					<h2 className='adminHeading'>Antal</h2>
+					<h2 className='adminHeading'>Meddelande</h2>
+				</div>
+				{showBookings
+					? bookings.map((m) => {
+							return (
+								<FormCollector
+									data={m}
+									key={m._id}
+									handleDelete={handleDelete}
+								/>
+							);
+					  })
+					: null}
 			</div>
-
-			{/* <form onSubmit={handleSubmit}>
-				<button>Update</button>
-			</form>
-			<form onSubmit={handleDelete}>
-				<button>Delete</button>
-			</form> */}
-		</>
+		</div>
 	);
 }

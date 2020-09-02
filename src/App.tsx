@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 
-import './App.css';
+import './App.scss';
 import Home from './components/home/Home';
 
 import axios from 'axios';
@@ -31,26 +31,27 @@ function App() {
 		});
 	}, []);
 
+	const Page404 = () => (
+		<div>
+			<p>
+				Oj! Något gick fel. Det finns ingen sida med den urlen. Testa att gå
+				till vår <Link to='/'>startsida.</Link>
+			</p>
+		</div>
+	);
+
 	return (
 		<Router>
 			<div>
-				<nav>
-					<ul>
-						<li>
-							<Link to='/'>Home</Link>
-						</li>
-						<li>
-							<Link to='/admin'>Admin</Link>
-						</li>
-					</ul>
-				</nav>
-
 				<Switch>
 					<Route path='/admin'>
 						<Admin allBookings={bookings} allCustomers={customers} />
 					</Route>
 					<Route exact path='/'>
 						<Home allBookings={bookings} />
+					</Route>
+					<Route>
+						<Page404 />
 					</Route>
 				</Switch>
 			</div>

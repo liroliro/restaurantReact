@@ -14,7 +14,8 @@ export default function DateComponent(props: IDateProps) {
 		''
 	);
 
-	const [clickedDate, setClickedDate] = useState('');
+	const [btnState, setBtnState] = useState(false);
+
 	const [showCalendar, setShowCalendar] = useState(false);
 
 	useEffect(() => {
@@ -43,16 +44,13 @@ export default function DateComponent(props: IDateProps) {
 		setGuestDateDayAfterTomorrow(dayAfterTomorrowsDate);
 	}, []);
 
-	useEffect(() => {
-		sendToParent();
-	}, [clickedDate]);
-
 	function handleClickedDate(e: React.MouseEvent<HTMLButtonElement>) {
-		setClickedDate(e.currentTarget.value);
+		sendToParent(e.currentTarget.value);
+		setBtnState(!btnState);
 	}
 
-	function sendToParent() {
-		props.sendDate(clickedDate);
+	function sendToParent(string: string) {
+		props.sendDate(string);
 	}
 
 	function updateCalendar(e: Date) {
@@ -61,36 +59,51 @@ export default function DateComponent(props: IDateProps) {
 			' ' +
 			e.toLocaleDateString(undefined, { month: 'short' });
 
-		setClickedDate(dateString);
+		sendToParent(dateString);
 	}
+
+	let btn_class = btnState ? 'clickedButton' : 'unclickedButton';
 
 	return (
 		<>
-			<div>
-				<div>
+			<div className='dateComponent'>
+				<span>
+					<button
+						onClick={handleClickedDate}
+						value={guestDate}
+						type='button'
+						className={btn_class}
+					>
+						{guestDate}
+					</button>
+				</span>
+				<span>
+					<button
+						onClick={handleClickedDate}
+						value={guestDateTomorrow}
+						type='button'
+						className={btn_class}
+					>
+						{guestDateTomorrow}
+					</button>
+				</span>
+				<span>
+					<button
+						onClick={handleClickedDate}
+						value={guestDateDayAfterTomorrow}
+						type='button'
+						className={btn_class}
+					>
+						{guestDateDayAfterTomorrow}
+					</button>
+				</span>
+				<span>
 					<i
-						className='fas fa-calendar-week'
+						className='fas fa-calendar-week fa-lg'
 						onClick={() => setShowCalendar(true)}
 					></i>
 					{showCalendar ? <Calendar onClickDay={updateCalendar} /> : ''}
-				</div>
-				<button onClick={handleClickedDate} value={guestDate} type='button'>
-					{guestDate}
-				</button>
-				<button
-					onClick={handleClickedDate}
-					value={guestDateTomorrow}
-					type='button'
-				>
-					{guestDateTomorrow}
-				</button>
-				<button
-					onClick={handleClickedDate}
-					value={guestDateDayAfterTomorrow}
-					type='button'
-				>
-					{guestDateDayAfterTomorrow}
-				</button>
+				</span>
 			</div>
 		</>
 	);
