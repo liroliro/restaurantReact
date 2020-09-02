@@ -1,9 +1,10 @@
-import React, { useState, useEffect, FormEvent } from 'react';
+import React, { useState, useEffect, FormEvent, ChangeEvent } from 'react';
 import axios from 'axios';
 
 import IBooking from '../../interface/IBooking';
 import ICustomer from '../../interface/ICustomer';
 import Calendar from 'react-calendar';
+import FormCollector from '../formCollector/FormCollector';
 
 interface IAdminProps {
 	allBookings: IBooking[];
@@ -42,26 +43,6 @@ export default function Admin(props: IAdminProps, state: IAdminResult) {
 		setShowBookings(true);
 	}
 
-	function handleSubmit(e: FormEvent) {
-		e.preventDefault();
-		axios.put('http://localhost:8000/update', {}).then(function (response) {
-			console.log(response);
-		});
-	}
-
-
-	function handleDelete(id: string) {
-		console.log("Du försöker ta bort id: " + id);
-		axios.delete('http://localhost:8000/delete/' + id, {}).then(function (response) {
-			bookings.map((m) => {
-
-			})	
-	
-			console.log(response);
-		});
-		// e.preventDefault();
-	}
-
 	return (
 		<>
 			<div>
@@ -69,40 +50,12 @@ export default function Admin(props: IAdminProps, state: IAdminResult) {
 			</div>
 
 			<div>
-				<table key='Table'>
-					<thead>
-						<tr>
-							<th key='date'>Datum</th>
-							<th key='time'>Tid</th>
-							<th key='guests'>Antal</th>
-							<th key='message'>Meddelande</th>
-						</tr>
-					</thead>
-					{showBookings
-						? bookings.map((m) => {
-								return (
-									<tbody key={m._id}>
-										<tr>
-											<td>{m.date}</td>
-											<td>{m.time}</td>
-											<td>{m.guests}</td>
-											<td>{m.message}</td>
-											{/* <td><button onClick={handleDelete(m._id)}>Ta bort bokning</button></td> */}
-											<td><button onClick={() => {handleDelete(m._id)} }>Ta bort bokning</button></td>
-										</tr>
-									</tbody>
-								);
-						  })
-						: null}
-				</table>
+				{showBookings
+					? bookings.map((m) => {
+							return <FormCollector data={m} key={m._id} />;
+					  })
+					: null}
 			</div>
-
-			{/* <form onSubmit={handleSubmit}>
-				<button>Update</button>
-			</form>
-			<form onSubmit={handleDelete}>
-				<button>Delete</button>
-			</form> */}
 		</>
 	);
 }

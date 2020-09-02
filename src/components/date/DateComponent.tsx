@@ -14,6 +14,8 @@ export default function DateComponent(props: IDateProps) {
 		''
 	);
 
+	const [btnState, setBtnState] = useState(false);
+
 	const [clickedDate, setClickedDate] = useState('');
 	const [showCalendar, setShowCalendar] = useState(false);
 
@@ -49,6 +51,7 @@ export default function DateComponent(props: IDateProps) {
 
 	function handleClickedDate(e: React.MouseEvent<HTMLButtonElement>) {
 		setClickedDate(e.currentTarget.value);
+		setBtnState(!btnState);
 	}
 
 	function sendToParent() {
@@ -64,6 +67,8 @@ export default function DateComponent(props: IDateProps) {
 		setClickedDate(dateString);
 	}
 
+	let btn_class = btnState ? 'clickedButton' : 'unclickedButton';
+
 	return (
 		<>
 			<div>
@@ -74,13 +79,19 @@ export default function DateComponent(props: IDateProps) {
 					></i>
 					{showCalendar ? <Calendar onClickDay={updateCalendar} /> : ''}
 				</div>
-				<button onClick={handleClickedDate} value={guestDate} type='button'>
+				<button
+					onClick={handleClickedDate}
+					value={guestDate}
+					type='button'
+					className={btn_class}
+				>
 					{guestDate}
 				</button>
 				<button
 					onClick={handleClickedDate}
 					value={guestDateTomorrow}
 					type='button'
+					className={btn_class}
 				>
 					{guestDateTomorrow}
 				</button>
@@ -88,6 +99,7 @@ export default function DateComponent(props: IDateProps) {
 					onClick={handleClickedDate}
 					value={guestDateDayAfterTomorrow}
 					type='button'
+					className={btn_class}
 				>
 					{guestDateDayAfterTomorrow}
 				</button>
