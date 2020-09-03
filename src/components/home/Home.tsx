@@ -179,11 +179,11 @@ export default function Home(props: IHomeProps) {
 							<label>
 								<textarea onChange={updateMessage} placeholder='Meddelande' />
 							</label>
-							<button type='submit'>Post</button>
+							<button type='submit' className="btn-post">Boka</button>
 						</div>
 					) : (
-						<p>Det är slut på bord.</p>
-					)}
+								<p>Det är slut på bord.</p>
+							)}
 				</div>
 			</form>
 		</div>
