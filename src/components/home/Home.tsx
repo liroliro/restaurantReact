@@ -7,7 +7,7 @@ import axios from 'axios';
 import IBooking from '../../interface/IBooking';
 
 interface IHomeProps {
-	allBookings: IBooking[];
+  allBookings: IBooking[];
 }
 
 export default function Home(props: IHomeProps) {
@@ -188,4 +188,4 @@ export default function Home(props: IHomeProps) {
 			</form>
 		</div>
 	);
-}
+ }

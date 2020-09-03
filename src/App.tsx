@@ -19,6 +19,7 @@ function App() {
 		axios.get('http://localhost:8000/bookings').then((res) => {
 			let bookings: IBooking[] = res.data;
 			setBookings(bookings);
+			console.log(bookings)
 		});
 	}, []);
 
@@ -26,6 +27,7 @@ function App() {
 		axios.get('http://localhost:8000/customers').then((res) => {
 			let allCustomers: ICustomer[] = res.data;
 			setCustomer(allCustomers);
+			console.log(allCustomers)
 		});
 	}, []);
 
