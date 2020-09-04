@@ -40,16 +40,14 @@ code {
 	text-align: center;
 	flex-direction: row;
 	margin: 3px;
-	
+
 }
 .dateComponent > span > button {
 	width: 80px;
-	// height: 25px;
 	margin: 0 auto;
 	padding: 0;
 	font-size: 15px;
 	display: inline-block;
-	// line-height: 10px;
 	text-align: center;
 	border-radius: 3px;
 
@@ -66,7 +64,8 @@ code {
 }
 
 .timeComponent {
-	margin: 30px;
+	margin-top: 10px;
+	margin-bottom: 30px;
 }
 
 .timeComponent > span {
@@ -77,12 +76,10 @@ code {
 
 .timeComponent > span > button {
 	width: 80px;
-	// height: 25px;
 	margin: 0 auto;
 	padding: 0;
 	font-size: 15px;
 	display: inline-block;
-	// line-height: 10px;
 	text-align: center;
 	border-radius: 3px;
 
@@ -120,11 +117,35 @@ code {
 	}
 }
 
-.bokingConfirm {
+.expanding-form{
+	// overflow: hidden;
+	// line-height: 50px;
+
+	// transition: all .5s ease-in-out;
+	// height: 0;
+		
+	
+	
+	// .expanding-form:target {
+	// 	height: 50px; 
+	// }
+}
+
+.bookingConfirm {
 	margin-top: 30px;
+	margin-bottom: 10px;
 	font-weight: bold;
 	color: white;
 }
+
+.form-div{
+	margin: auto;
+
+	.input-error-message{
+		font-size: 13px
+	}
+}
+ 
 
 .header {
 	background: rgba(0, 0, 0, 0.6);
@@ -157,12 +178,10 @@ input {
 
 .btn-post {
 	width: 80px;
-	// height: 25px;
 	margin: 0 auto;
 	padding: 0;
 	font-size: 15px;
 	display: inline-block;
-	// line-height: 10px;
 	text-align: center;
 	border-radius: 3px;
 	margin: 3px;
@@ -178,6 +197,12 @@ input {
 		background: #7fb4a4;
 		color: #ffffff;
 	}
+}
+
+
+
+.error-message{
+	color: red;
 }
 
 ::-webkit-resizer {

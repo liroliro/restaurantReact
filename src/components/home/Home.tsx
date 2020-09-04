@@ -23,6 +23,19 @@ export default function Home(props: IHomeProps) {
 	const [tables, setTables] = useState(true);
 	const [validation, setValidation] = useState(false);
 	const [showTables, setShowTables] = useState(Boolean);
+	const [firstNameError, setFirstNameError] = useState('');
+	const [lastNameError, setLastNameError] = useState('');
+	const [emailError, setEmailError] = useState('');
+	const [phoneError, setPhoneError] = useState('');
+	
+	// const firstRender = useRef(true);
+	// Så att validering inte kommer köras på första sidrendrering
+	// useEffect(() => {
+	// 	if (firstRender.current) {
+	// 		firstRender.current = false
+	// 		return
+	// 	  }		
+	// }, [firstName, lastName, email, phone]);
 
 	useEffect(() => {
 		if (guestTime === 0 || guestsNumber === 0 || guestDate === '') {
@@ -31,6 +44,7 @@ export default function Home(props: IHomeProps) {
 			setValidation(true);
 		}
 	}, [guestTime, guestsNumber, guestDate]);
+
 
 	function updateGuestsNumber(number: number) {
 		setGuestsNumber(number);
@@ -66,20 +80,28 @@ export default function Home(props: IHomeProps) {
 
 	function handleSubmit(e: FormEvent) {
 		e.preventDefault();
-		axios
-			.post('http://localhost:8000/', {
-				firstName,
-				lastName,
-				email,
-				phone,
-				date: guestDate,
-				time: guestTime,
-				guests: guestsNumber,
-				message,
-			})
-			.then((response) => {
-				console.log(response);
-			});
+		if(firstName === '' || lastName === '' || email === '' || phone === ''){
+			setFirstNameError('Vänligen fyll i ditt förnamn.');
+			setLastNameError('Vänligen fyll i ditt efternamn.')
+			setEmailError('Vänligen fyll i din email.')
+			setPhoneError('Vänligen fyll i ditt telefonnummer.')
+			return 
+		}else{
+			axios
+				.post('http://localhost:8000/', {
+					firstName,
+					lastName,
+					email,
+					phone,
+					date: guestDate,
+					time: guestTime,
+					guests: guestsNumber,
+					message,
+				})
+				.then((response) => {
+					console.log(response);
+				});
+		}
 	}
 
 	function checkForAvaliableTables() {
@@ -100,6 +122,7 @@ export default function Home(props: IHomeProps) {
 		setTables(false);
 
 		table < 15 ? setShowTables(true) : setShowTables(false);
+
 	}
 
 	const validatedButton = (
@@ -139,50 +162,62 @@ export default function Home(props: IHomeProps) {
 					{tables ? (
 						''
 					) : showTables ? (
-						<div>
-							<div className='bokingConfirm'>
+						<div className="expanding-form">
+							<div className='bookingConfirm'>
 								Du vill boka bord den {guestDate} klockan {guestTime}.00 för{' '}
 								{guestsNumber} {''}personer.
 							</div>
-							<div className='bokingConfirm'>
+							<div className='bookingConfirm'>
 								{' '}
 								Fyll i dina uppgifter för att genomföra bokningen.
 							</div>
-							<label>
-								<input
-									name='firstName'
-									onChange={updateFirstName}
-									placeholder='Förnamn'
-								/>
-							</label>
-							<label>
-								<input
-									name='lastName'
-									onChange={updateLastName}
-									placeholder='Efternamn'
-								/>
-							</label>
-							<label>
-								<input
-									name='email'
-									onChange={updateEmail}
-									placeholder='Email'
-								/>
-							</label>
-							<label>
-								<input
-									name='phone'
-									onChange={updatePhone}
-									placeholder='Telefonnummer'
-								/>
-							</label>
-							<label>
-								<textarea onChange={updateMessage} placeholder='Meddelande' />
-							</label>
-							<button type='submit' className="btn-post">Boka</button>
+							<div className="form-div">
+								<div>
+									<label>
+										<input
+											name='firstName'
+											onChange={updateFirstName}
+											placeholder='Förnamn'
+										/>
+										{<p className="input-error-message">{firstNameError}</p>}
+									</label>
+									<label>
+										<input
+											name='lastName'
+											onChange={updateLastName}
+											placeholder='Efternamn'
+											/>
+									</label>
+									{<p className="input-error-message">{lastNameError}</p>}
+								</div>
+								<div>
+									<label>
+										<input
+											name='email'
+											onChange={updateEmail}
+											placeholder='Email'
+											/>
+									</label>
+									{<p className="input-error-message">{emailError}</p>}
+									<label>
+										<input
+											name='phone'
+											onChange={updatePhone}
+											placeholder='Telefonnummer'
+											/>
+									</label>
+									{<p className="input-error-message">{phoneError}</p>}
+								</div>
+								<div>
+									<label>
+										<textarea onChange={updateMessage} placeholder='Meddelande' />
+									</label>
+									<button type='submit' className="btn-post">Boka</button>
+								</div>
+							</div>
 						</div>
 					) : (
-								<p>Det är slut på bord.</p>
+								<p className="error-message">Det är tyvärr slut på bord denna tiden.</p>
 							)}
 				</div>
 			</form>
