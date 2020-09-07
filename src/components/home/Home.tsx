@@ -5,6 +5,8 @@ import Time from '../time/Time';
 import Guests from '../guests/Guests';
 import axios from 'axios';
 import IBooking from '../../interface/IBooking';
+import ThankYou from '../thankyou/ThankYou';
+import IThankYou from '../../interface/IThankYou'
 
 interface IHomeProps {
   allBookings: IBooking[];
@@ -27,9 +29,10 @@ export default function Home(props: IHomeProps) {
 	const [lastNameError, setLastNameError] = useState('');
 	const [emailError, setEmailError] = useState('');
 	const [phoneError, setPhoneError] = useState('');
-	const [checkValidation, setCheckValidation] = useState(false)
+	const [bookingSent, setBookingSent] = useState(false)
 
-	let booking;
+	const [theBookedCustomer, setTheBookedCustomer] = useState<IThankYou>()
+
 
 	const firstRender = useRef(true)
 	
@@ -38,38 +41,6 @@ export default function Home(props: IHomeProps) {
 			firstRender.current = false
 			return
 		  }
-		if(firstName === '' || firstName === null){
-			setFirstNameError('Vänligen fyll i ditt förnamn.');
-			setCheckValidation(false)
-		} else {
-			setFirstNameError('')
-		}
-
-		if(lastName === '' || lastName === null){
-			setLastNameError('Vänligen fyll i ditt efternamn.')
-			setCheckValidation(false)
-		} else {
-			setLastNameError('')
-		}
-
-		if(email === '' || email === null){
-			setEmailError('Vänligen fyll i din email.')
-			setCheckValidation(false)
-		} else {
-			setEmailError('')
-		}
-
-		if(phone === '' || phone === null){
-			setPhoneError('Vänligen fyll i ditt telefonnummer.')
-			setCheckValidation(false)
-		} else {
-			setPhoneError('')
-		}
-
-		if(firstName !== '' && lastName !== '' && email !== '' && phone !=='') {
-			setCheckValidation(true); 
-		}
-
 	}, [firstName, lastName, email, phone]);
 
 	useEffect(() => {
@@ -115,7 +86,31 @@ export default function Home(props: IHomeProps) {
 
 	function handleSubmit(e: FormEvent) {
 		e.preventDefault();
-		if(checkValidation === false ) {
+		if(firstName === '' || firstName === null){
+			setFirstNameError('Vänligen fyll i ditt förnamn.');
+		} else {
+			setFirstNameError('')
+		}
+
+		if(lastName === '' || lastName === null){
+			setLastNameError('Vänligen fyll i ditt efternamn.')
+		} else {
+			setLastNameError('')
+		}
+
+		if(email === '' || email === null){
+			setEmailError('Vänligen fyll i din email.')
+		} else {
+			setEmailError('')
+		}
+
+		if(phone === '' || phone === null){
+			setPhoneError('Vänligen fyll i ditt telefonnummer.')
+		} else {
+			setPhoneError('')
+		}
+
+		if(firstName === '' && lastName === '' && email === '' && phone ==='') {
 			return
 		} else {
 			axios
@@ -130,9 +125,21 @@ export default function Home(props: IHomeProps) {
 					message,
 				})
 				.then((response) => {
-					 booking = (
-						<div>Tack för din bokdningsdiangin</div>
-					);
+					console.log(response.data)
+
+					let bookedCustomer: IThankYou = {
+							firstName: response.data.user.firstName,
+							lastName: response.data.user.lastName,
+							email: response.data.user.email,
+							phone: response.data.user.phone,
+							message: response.data.booking.message,
+							date: response.data.booking.date,
+							time: response.data.booking.time,
+							guests: response.data.booking.guests,	
+					}
+
+					setBookingSent(true)
+					setTheBookedCustomer(bookedCustomer)
 				});
 			}
 
@@ -255,7 +262,9 @@ export default function Home(props: IHomeProps) {
 								<p className="error-message">Det är tyvärr slut på bord denna tiden.</p>
 							)}
 
-							<div>{booking}</div>
+					{/* {bookingSent ? (
+						<ThankYou theCustomer={theBookedCustomer}/>
+					): null} */}
 				</div>
 			</form>
 		</div>
