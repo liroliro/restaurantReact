@@ -6,6 +6,7 @@ import IBooking from '../../interface/IBooking';
 import ICustomer from '../../interface/ICustomer';
 import Calendar from 'react-calendar';
 import FormCollector from '../formCollector/FormCollector';
+import { Link } from 'react-router-dom';
 
 interface IAdminProps {
 	allBookings: IBooking[];
@@ -35,12 +36,27 @@ export default function Admin(
 	function checkForAvaliableTables(dateString: string) {
 		const totalBookings = props.allBookings.filter((b) => {
 			if (b.date === dateString) {
-				return b;
+				const customer = props.allCustomers.filter((c)=> {
+					if(b.customerId === c._id) {
+						return c;
+					} return null;
+				})
+
+				let summedBooking = {
+					booking: b,
+					customer: customer
+				}
+
+				return summedBooking;
+			} else {
+				return null
 			}
-			return null;
 		});
 
-		setBookings(totalBookings);
+		console.log(totalBookings)
+
+
+		// setBookings(totalBookings);
 		setShowBookings(true);
 	}
 
@@ -59,7 +75,7 @@ export default function Admin(
 
 	return (
 		<div className='header'>
-			<h2 className='header-text'>Välkommen till DinnerSpace</h2>
+			<h2 className='header-text'>Välkommen till <Link to='/' className='adminLink'>DinnerSpace</Link></h2>
 			<div>
 				<Calendar onClickDay={updateCalendar} />
 			</div>
