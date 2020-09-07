@@ -29,9 +29,10 @@ export default function Home(props: IHomeProps) {
 	const [lastNameError, setLastNameError] = useState('');
 	const [emailError, setEmailError] = useState('');
 	const [phoneError, setPhoneError] = useState('');
-	const [bookingSent, setBookingSent] = useState(false)
+	const [bookingSent, setBookingSent] = useState(false);
 
-	const [theBookedCustomer, setTheBookedCustomer] = useState<IThankYou>()
+	let thankYouDefaultValue: IThankYou = {firstName: '', lastName: '', email: '', phone: '', date: '', time: 0, guests: 0, message: ''}
+	const [theBookedCustomer, setTheBookedCustomer] = useState<IThankYou>(thankYouDefaultValue)
 
 
 	const firstRender = useRef(true)
@@ -178,7 +179,7 @@ export default function Home(props: IHomeProps) {
 	);
 
 	const unvalidatedButton = (
-		<button disabled className='Btn-search'>
+		<button disabled className='Btn-search-disabled'>
 			Sök efter lediga bord
 		</button>
 	);
@@ -207,7 +208,7 @@ export default function Home(props: IHomeProps) {
 						<div className="expanding-form">
 							<div className='bookingConfirm'>
 								Du vill boka bord den {guestDate} klockan {guestTime}.00 för{' '}
-								{guestsNumber} {''}personer.
+								{guestsNumber === 1 ? (guestsNumber +' person') : (guestsNumber + ' personer')}.
 							</div>
 							<div className='bookingConfirm'>
 								{' '}
@@ -262,9 +263,9 @@ export default function Home(props: IHomeProps) {
 								<p className="error-message">Det är tyvärr slut på bord denna tiden.</p>
 							)}
 
-					{/* {bookingSent ? (
+					{bookingSent ? (
 						<ThankYou theCustomer={theBookedCustomer}/>
-					): null} */}
+					): null}
 				</div>
 			</form>
 		</div>

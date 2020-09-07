@@ -10,18 +10,38 @@ import { Link } from 'react-router-dom';
 
 interface IAdminProps {
 	allBookings: IBooking[];
-	allCustomers: ICustomer[];
+	allCustomers: ICustomer[]	;
 }
 
-interface IAdminResult {
-	success: IBooking[];
+
+interface ITotalBookings {
+	booking: IBooking,
+	customer: ICustomer
 }
 
 export default function Admin(
-	props: IAdminProps,
-	confirmedBookings: IAdminResult
+	props: IAdminProps
 ) {
-	const [bookings, setBookings] = useState(confirmedBookings.success);
+
+	let defaultBookingValue: ITotalBookings[] = [{
+		booking: {
+			_id: '',
+			date: '',
+			time: 0,
+			guests: 0,
+			message: '',
+			customerId: ''
+		},
+		customer: {
+			_id: '',
+			firstName: '',
+			lastName: '',
+			email: '',
+			phone: ''
+		}
+	}]
+
+	const [bookings, setBookings] = useState(defaultBookingValue);
 	const [showBookings, setShowBookings] = useState(false);
 
 	function updateCalendar(e: Date) {
@@ -34,7 +54,7 @@ export default function Admin(
 	}
 
 	function checkForAvaliableTables(dateString: string) {
-		const totalBookings = props.allBookings.filter((b) => {
+		const pairedBookings = props.allBookings.map((b) => {
 			if (b.date === dateString) {
 				const customer = props.allCustomers.filter((c)=> {
 					if(b.customerId === c._id) {
@@ -44,7 +64,7 @@ export default function Admin(
 
 				let summedBooking = {
 					booking: b,
-					customer: customer
+					customer: customer[0]
 				}
 
 				return summedBooking;
@@ -53,17 +73,22 @@ export default function Admin(
 			}
 		});
 
-		console.log(totalBookings)
+		const totalBookings = pairedBookings.filter((b)=> {
+			if(b !== null) {
+				return b
+			} return
+		})
 
 
-		// setBookings(totalBookings);
+console.log(totalBookings)
+		setBookings(totalBookings);
 		setShowBookings(true);
 	}
 
 	function handleDelete(id: string) {
 		axios.delete(`http://localhost:8000/delete/${id}`, {}).then((response) => {
 			const updatedBookings = bookings.filter((b) => {
-				if (b._id !== id) {
+				if (b.booking._id !== id) {
 					return b;
 				}
 				return null;
@@ -76,9 +101,11 @@ export default function Admin(
 	return (
 		<div className='header'>
 			<h2 className='header-text'>Välkommen till <Link to='/' className='adminLink'>DinnerSpace</Link></h2>
+
 			<div>
 				<Calendar onClickDay={updateCalendar} />
 			</div>
+
 			<div>
 				<div className='form-container'>
 					<h2 className='adminHeading'>Datum</h2>
