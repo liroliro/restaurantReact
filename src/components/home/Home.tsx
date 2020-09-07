@@ -1,4 +1,4 @@
-import React, { useState, FormEvent, ChangeEvent, useEffect } from 'react';
+import React, { useState, FormEvent, ChangeEvent, useEffect, useRef } from 'react';
 
 import DateComponent from '../date/DateComponent';
 import Time from '../time/Time';
@@ -27,15 +27,50 @@ export default function Home(props: IHomeProps) {
 	const [lastNameError, setLastNameError] = useState('');
 	const [emailError, setEmailError] = useState('');
 	const [phoneError, setPhoneError] = useState('');
+	const [checkValidation, setCheckValidation] = useState(false)
+
+	let booking;
+
+	const firstRender = useRef(true)
 	
-	// const firstRender = useRef(true);
-	// Så att validering inte kommer köras på första sidrendrering
-	// useEffect(() => {
-	// 	if (firstRender.current) {
-	// 		firstRender.current = false
-	// 		return
-	// 	  }		
-	// }, [firstName, lastName, email, phone]);
+	useEffect(() => {
+		if (firstRender.current) {
+			firstRender.current = false
+			return
+		  }
+		if(firstName === '' || firstName === null){
+			setFirstNameError('Vänligen fyll i ditt förnamn.');
+			setCheckValidation(false)
+		} else {
+			setFirstNameError('')
+		}
+
+		if(lastName === '' || lastName === null){
+			setLastNameError('Vänligen fyll i ditt efternamn.')
+			setCheckValidation(false)
+		} else {
+			setLastNameError('')
+		}
+
+		if(email === '' || email === null){
+			setEmailError('Vänligen fyll i din email.')
+			setCheckValidation(false)
+		} else {
+			setEmailError('')
+		}
+
+		if(phone === '' || phone === null){
+			setPhoneError('Vänligen fyll i ditt telefonnummer.')
+			setCheckValidation(false)
+		} else {
+			setPhoneError('')
+		}
+
+		if(firstName !== '' && lastName !== '' && email !== '' && phone !=='') {
+			setCheckValidation(true); 
+		}
+
+	}, [firstName, lastName, email, phone]);
 
 	useEffect(() => {
 		if (guestTime === 0 || guestsNumber === 0 || guestDate === '') {
@@ -59,7 +94,7 @@ export default function Home(props: IHomeProps) {
 	}
 
 	function updateFirstName(e: ChangeEvent<HTMLInputElement>) {
-		setFirstName(e.target.value);
+			setFirstName(e.target.value);
 	}
 
 	function updateLastName(e: ChangeEvent<HTMLInputElement>) {
@@ -80,13 +115,9 @@ export default function Home(props: IHomeProps) {
 
 	function handleSubmit(e: FormEvent) {
 		e.preventDefault();
-		if(firstName === '' || lastName === '' || email === '' || phone === ''){
-			setFirstNameError('Vänligen fyll i ditt förnamn.');
-			setLastNameError('Vänligen fyll i ditt efternamn.')
-			setEmailError('Vänligen fyll i din email.')
-			setPhoneError('Vänligen fyll i ditt telefonnummer.')
-			return 
-		}else{
+		if(checkValidation === false ) {
+			return
+		} else {
 			axios
 				.post('http://localhost:8000/', {
 					firstName,
@@ -99,10 +130,14 @@ export default function Home(props: IHomeProps) {
 					message,
 				})
 				.then((response) => {
-					console.log(response);
+					 booking = (
+						<div>Tack för din bokdningsdiangin</div>
+					);
 				});
+			}
+
 		}
-	}
+	
 
 	function checkForAvaliableTables() {
 		let table: number = 0;
@@ -179,7 +214,7 @@ export default function Home(props: IHomeProps) {
 											onChange={updateFirstName}
 											placeholder='Förnamn'
 										/>
-										{<p className="input-error-message">{firstNameError}</p>}
+										{firstNameError && <p className="input-error-message">{firstNameError}</p>}
 									</label>
 									<label>
 										<input
@@ -188,7 +223,7 @@ export default function Home(props: IHomeProps) {
 											placeholder='Efternamn'
 											/>
 									</label>
-									{<p className="input-error-message">{lastNameError}</p>}
+									{lastNameError && <p className="input-error-message">{lastNameError}</p>}
 								</div>
 								<div>
 									<label>
@@ -198,7 +233,7 @@ export default function Home(props: IHomeProps) {
 											placeholder='Email'
 											/>
 									</label>
-									{<p className="input-error-message">{emailError}</p>}
+									{emailError && <p className="input-error-message">{emailError}</p>}
 									<label>
 										<input
 											name='phone'
@@ -206,7 +241,7 @@ export default function Home(props: IHomeProps) {
 											placeholder='Telefonnummer'
 											/>
 									</label>
-									{<p className="input-error-message">{phoneError}</p>}
+									{phoneError && <p className="input-error-message">{phoneError}</p>}
 								</div>
 								<div>
 									<label>
@@ -219,6 +254,8 @@ export default function Home(props: IHomeProps) {
 					) : (
 								<p className="error-message">Det är tyvärr slut på bord denna tiden.</p>
 							)}
+
+							<div>{booking}</div>
 				</div>
 			</form>
 		</div>
