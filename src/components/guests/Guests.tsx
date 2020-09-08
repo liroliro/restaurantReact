@@ -85,6 +85,16 @@ export default function Guests(props: IGuestsProps) {
 					12
 				</button>
 			</div>
+
+			<div className='paddles'>
+				<button className='left-paddle' type='button' value='<'></button>
+				<button className='right-paddle' type='button' value='>'>
+					12
+				</button>
+				{/* <a className='prev' onClick={this.scroll.bind(null, -1)}>
+					&#10094;
+				</a> */}
+			</div>
 		</div>
 	);
 }
