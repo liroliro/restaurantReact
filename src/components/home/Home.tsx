@@ -5,9 +5,11 @@ import Time from '../time/Time';
 import Guests from '../guests/Guests';
 import axios from 'axios';
 import IBooking from '../../interface/IBooking';
+import ThankYou from '../thankyou/ThankYou';
+import IThankYou from '../../interface/IThankYou'
 
 interface IHomeProps {
-  allBookings: IBooking[];
+	allBookings: IBooking[];
 }
 
 export default function Home(props: IHomeProps) {
@@ -27,49 +29,20 @@ export default function Home(props: IHomeProps) {
 	const [lastNameError, setLastNameError] = useState('');
 	const [emailError, setEmailError] = useState('');
 	const [phoneError, setPhoneError] = useState('');
-	const [checkValidation, setCheckValidation] = useState(false)
+	const [bookingSent, setBookingSent] = useState(false);
+	const [gdpr, setGdpr] = useState(false);
+	const [gdprError, setGdprError] = useState('');
+	let thankYouDefaultValue: IThankYou = { firstName: '', lastName: '', email: '', phone: '', date: '', time: 0, guests: 0, message: '' }
+	const [theBookedCustomer, setTheBookedCustomer] = useState<IThankYou>(thankYouDefaultValue)
 
-	let booking;
 
 	const firstRender = useRef(true)
-	
+
 	useEffect(() => {
 		if (firstRender.current) {
 			firstRender.current = false
 			return
-		  }
-		if(firstName === '' || firstName === null){
-			setFirstNameError('Vänligen fyll i ditt förnamn.');
-			setCheckValidation(false)
-		} else {
-			setFirstNameError('')
 		}
-
-		if(lastName === '' || lastName === null){
-			setLastNameError('Vänligen fyll i ditt efternamn.')
-			setCheckValidation(false)
-		} else {
-			setLastNameError('')
-		}
-
-		if(email === '' || email === null){
-			setEmailError('Vänligen fyll i din email.')
-			setCheckValidation(false)
-		} else {
-			setEmailError('')
-		}
-
-		if(phone === '' || phone === null){
-			setPhoneError('Vänligen fyll i ditt telefonnummer.')
-			setCheckValidation(false)
-		} else {
-			setPhoneError('')
-		}
-
-		if(firstName !== '' && lastName !== '' && email !== '' && phone !=='') {
-			setCheckValidation(true); 
-		}
-
 	}, [firstName, lastName, email, phone]);
 
 	useEffect(() => {
@@ -80,6 +53,14 @@ export default function Home(props: IHomeProps) {
 		}
 	}, [guestTime, guestsNumber, guestDate]);
 
+	function handleGdpr(e: any) {
+		if (e.target.checked === true) {
+			return setGdpr(true);
+		} else {
+			return setGdpr(false);
+		}
+
+	}
 
 	function updateGuestsNumber(number: number) {
 		setGuestsNumber(number);
@@ -94,7 +75,7 @@ export default function Home(props: IHomeProps) {
 	}
 
 	function updateFirstName(e: ChangeEvent<HTMLInputElement>) {
-			setFirstName(e.target.value);
+		setFirstName(e.target.value);
 	}
 
 	function updateLastName(e: ChangeEvent<HTMLInputElement>) {
@@ -115,7 +96,37 @@ export default function Home(props: IHomeProps) {
 
 	function handleSubmit(e: FormEvent) {
 		e.preventDefault();
-		if(checkValidation === false ) {
+		if (firstName === '' || firstName === null) {
+			setFirstNameError('Vänligen fyll i ditt förnamn.');
+		} else {
+			setFirstNameError('')
+		}
+
+		if (lastName === '' || lastName === null) {
+			setLastNameError('Vänligen fyll i ditt efternamn.')
+		} else {
+			setLastNameError('')
+		}
+
+		if (email === '' || email === null) {
+			setEmailError('Vänligen fyll i din email.')
+		} else {
+			setEmailError('')
+		}
+
+		if (phone === '' || phone === null) {
+			setPhoneError('Vänligen fyll i ditt telefonnummer.')
+		} else {
+			setPhoneError('')
+		}
+
+		if (gdpr === false ) {
+			setGdprError('Vänligen godkänn gdpr')
+		} else {
+			setGdprError('')
+		}
+
+		if (firstName === '' && lastName === '' && email === '' && phone === '') {
 			return
 		} else {
 			axios
@@ -130,14 +141,26 @@ export default function Home(props: IHomeProps) {
 					message,
 				})
 				.then((response) => {
-					 booking = (
-						<div>Tack för din bokdningsdiangin</div>
-					);
-				});
-			}
+					console.log(response.data)
 
+					let bookedCustomer: IThankYou = {
+						firstName: response.data.user.firstName,
+						lastName: response.data.user.lastName,
+						email: response.data.user.email,
+						phone: response.data.user.phone,
+						message: response.data.booking.message,
+						date: response.data.booking.date,
+						time: response.data.booking.time,
+						guests: response.data.booking.guests,
+					}
+
+					setBookingSent(true)
+					setTheBookedCustomer(bookedCustomer)
+				});
 		}
-	
+
+	}
+
 
 	function checkForAvaliableTables() {
 		let table: number = 0;
@@ -171,7 +194,7 @@ export default function Home(props: IHomeProps) {
 	);
 
 	const unvalidatedButton = (
-		<button disabled className='Btn-search'>
+		<button disabled className='Btn-search-disabled'>
 			Sök efter lediga bord
 		</button>
 	);
@@ -200,7 +223,7 @@ export default function Home(props: IHomeProps) {
 						<div className="expanding-form">
 							<div className='bookingConfirm'>
 								Du vill boka bord den {guestDate} klockan {guestTime}.00 för{' '}
-								{guestsNumber} {''}personer.
+								{guestsNumber === 1 ? (guestsNumber + ' person') : (guestsNumber + ' personer')}.
 							</div>
 							<div className='bookingConfirm'>
 								{' '}
@@ -221,7 +244,7 @@ export default function Home(props: IHomeProps) {
 											name='lastName'
 											onChange={updateLastName}
 											placeholder='Efternamn'
-											/>
+										/>
 									</label>
 									{lastNameError && <p className="input-error-message">{lastNameError}</p>}
 								</div>
@@ -231,7 +254,7 @@ export default function Home(props: IHomeProps) {
 											name='email'
 											onChange={updateEmail}
 											placeholder='Email'
-											/>
+										/>
 									</label>
 									{emailError && <p className="input-error-message">{emailError}</p>}
 									<label>
@@ -239,7 +262,7 @@ export default function Home(props: IHomeProps) {
 											name='phone'
 											onChange={updatePhone}
 											placeholder='Telefonnummer'
-											/>
+										/>
 									</label>
 									{phoneError && <p className="input-error-message">{phoneError}</p>}
 								</div>
@@ -247,6 +270,8 @@ export default function Home(props: IHomeProps) {
 									<label>
 										<textarea onChange={updateMessage} placeholder='Meddelande' />
 									</label>
+									<input type="checkbox" name="gdprInput" value="Vi godkänner gdpr."onChange={handleGdpr} />
+									{gdprError && <p className="input-error-message">{gdprError}</p>}
 									<button type='submit' className="btn-post">Boka</button>
 								</div>
 							</div>
@@ -255,9 +280,11 @@ export default function Home(props: IHomeProps) {
 								<p className="error-message">Det är tyvärr slut på bord denna tiden.</p>
 							)}
 
-							<div>{booking}</div>
+					{bookingSent ? (
+						<ThankYou theCustomer={theBookedCustomer} />
+					) : null}
 				</div>
 			</form>
 		</div>
 	);
- }
+}
