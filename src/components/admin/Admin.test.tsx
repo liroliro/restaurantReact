@@ -42,12 +42,12 @@ test('should contain string Datum', () => {
 					time: 18,
 					guests: 18,
 					message: 'Hejhej',
-					customerId: 1234567890,
+					customerId: '1234567890',
 				},
 			]}
 			allCustomers={[
 				{
-					id: '1',
+					_id: '1',
 					firstName: 'Oscar',
 					lastName: 'Mattsson',
 					email: 'hello@gmail.com',
