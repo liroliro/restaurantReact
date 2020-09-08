@@ -1,4 +1,6 @@
 import React from 'react';
+import './Time.scss';
+
 
 interface ITimeProps {
 	sendTime(time: number): void;
@@ -6,6 +8,7 @@ interface ITimeProps {
 
 export default function Time(props: ITimeProps) {
 	function handleClick(e: React.MouseEvent<HTMLButtonElement>) {
+		e.currentTarget.className = "btn-style"
 		sendToParent(Number(e.currentTarget.value));
 	}
 

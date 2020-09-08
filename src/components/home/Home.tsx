@@ -1,10 +1,12 @@
-import React, { useState, FormEvent, ChangeEvent, useEffect } from 'react';
+import React, { useState, FormEvent, ChangeEvent, useEffect, useRef } from 'react';
 
 import DateComponent from '../date/DateComponent';
 import Time from '../time/Time';
 import Guests from '../guests/Guests';
 import axios from 'axios';
 import IBooking from '../../interface/IBooking';
+import ThankYou from '../thankyou/ThankYou';
+import IThankYou from '../../interface/IThankYou'
 
 interface IHomeProps {
   allBookings: IBooking[];
@@ -27,15 +29,20 @@ export default function Home(props: IHomeProps) {
 	const [lastNameError, setLastNameError] = useState('');
 	const [emailError, setEmailError] = useState('');
 	const [phoneError, setPhoneError] = useState('');
+	const [bookingSent, setBookingSent] = useState(false);
+
+	let thankYouDefaultValue: IThankYou = {firstName: '', lastName: '', email: '', phone: '', date: '', time: 0, guests: 0, message: ''}
+	const [theBookedCustomer, setTheBookedCustomer] = useState<IThankYou>(thankYouDefaultValue)
+
+
+	const firstRender = useRef(true)
 	
-	// const firstRender = useRef(true);
-	// Så att validering inte kommer köras på första sidrendrering
-	// useEffect(() => {
-	// 	if (firstRender.current) {
-	// 		firstRender.current = false
-	// 		return
-	// 	  }		
-	// }, [firstName, lastName, email, phone]);
+	useEffect(() => {
+		if (firstRender.current) {
+			firstRender.current = false
+			return
+		  }
+	}, [firstName, lastName, email, phone]);
 
 	useEffect(() => {
 		if (guestTime === 0 || guestsNumber === 0 || guestDate === '') {
@@ -59,7 +66,7 @@ export default function Home(props: IHomeProps) {
 	}
 
 	function updateFirstName(e: ChangeEvent<HTMLInputElement>) {
-		setFirstName(e.target.value);
+			setFirstName(e.target.value);
 	}
 
 	function updateLastName(e: ChangeEvent<HTMLInputElement>) {
@@ -80,13 +87,33 @@ export default function Home(props: IHomeProps) {
 
 	function handleSubmit(e: FormEvent) {
 		e.preventDefault();
-		if(firstName === '' || lastName === '' || email === '' || phone === ''){
+		if(firstName === '' || firstName === null){
 			setFirstNameError('Vänligen fyll i ditt förnamn.');
+		} else {
+			setFirstNameError('')
+		}
+
+		if(lastName === '' || lastName === null){
 			setLastNameError('Vänligen fyll i ditt efternamn.')
+		} else {
+			setLastNameError('')
+		}
+
+		if(email === '' || email === null){
 			setEmailError('Vänligen fyll i din email.')
+		} else {
+			setEmailError('')
+		}
+
+		if(phone === '' || phone === null){
 			setPhoneError('Vänligen fyll i ditt telefonnummer.')
-			return 
-		}else{
+		} else {
+			setPhoneError('')
+		}
+
+		if(firstName === '' && lastName === '' && email === '' && phone ==='') {
+			return
+		} else {
 			axios
 				.post('http://localhost:8000/', {
 					firstName,
@@ -99,10 +126,26 @@ export default function Home(props: IHomeProps) {
 					message,
 				})
 				.then((response) => {
-					console.log(response);
+					console.log(response.data)
+
+					let bookedCustomer: IThankYou = {
+							firstName: response.data.user.firstName,
+							lastName: response.data.user.lastName,
+							email: response.data.user.email,
+							phone: response.data.user.phone,
+							message: response.data.booking.message,
+							date: response.data.booking.date,
+							time: response.data.booking.time,
+							guests: response.data.booking.guests,	
+					}
+
+					setBookingSent(true)
+					setTheBookedCustomer(bookedCustomer)
 				});
+			}
+
 		}
-	}
+	
 
 	function checkForAvaliableTables() {
 		let table: number = 0;
@@ -136,7 +179,7 @@ export default function Home(props: IHomeProps) {
 	);
 
 	const unvalidatedButton = (
-		<button disabled className='Btn-search'>
+		<button disabled className='Btn-search-disabled'>
 			Sök efter lediga bord
 		</button>
 	);
@@ -165,7 +208,7 @@ export default function Home(props: IHomeProps) {
 						<div className="expanding-form">
 							<div className='bookingConfirm'>
 								Du vill boka bord den {guestDate} klockan {guestTime}.00 för{' '}
-								{guestsNumber} {''}personer.
+								{guestsNumber === 1 ? (guestsNumber +' person') : (guestsNumber + ' personer')}.
 							</div>
 							<div className='bookingConfirm'>
 								{' '}
@@ -179,7 +222,7 @@ export default function Home(props: IHomeProps) {
 											onChange={updateFirstName}
 											placeholder='Förnamn'
 										/>
-										{<p className="input-error-message">{firstNameError}</p>}
+										{firstNameError && <p className="input-error-message">{firstNameError}</p>}
 									</label>
 									<label>
 										<input
@@ -188,7 +231,7 @@ export default function Home(props: IHomeProps) {
 											placeholder='Efternamn'
 											/>
 									</label>
-									{<p className="input-error-message">{lastNameError}</p>}
+									{lastNameError && <p className="input-error-message">{lastNameError}</p>}
 								</div>
 								<div>
 									<label>
@@ -198,7 +241,7 @@ export default function Home(props: IHomeProps) {
 											placeholder='Email'
 											/>
 									</label>
-									{<p className="input-error-message">{emailError}</p>}
+									{emailError && <p className="input-error-message">{emailError}</p>}
 									<label>
 										<input
 											name='phone'
@@ -206,7 +249,7 @@ export default function Home(props: IHomeProps) {
 											placeholder='Telefonnummer'
 											/>
 									</label>
-									{<p className="input-error-message">{phoneError}</p>}
+									{phoneError && <p className="input-error-message">{phoneError}</p>}
 								</div>
 								<div>
 									<label>
@@ -219,6 +262,10 @@ export default function Home(props: IHomeProps) {
 					) : (
 								<p className="error-message">Det är tyvärr slut på bord denna tiden.</p>
 							)}
+
+					{bookingSent ? (
+						<ThankYou theCustomer={theBookedCustomer}/>
+					): null}
 				</div>
 			</form>
 		</div>
