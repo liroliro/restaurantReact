@@ -1,19 +1,20 @@
 import React, { useState, ChangeEvent, FormEvent } from 'react';
-import IBooking from '../../interface/IBooking';
-
 import axios from 'axios';
 import './FormCollector.scss';
+import ITotalBookings from '../../interface/ITotalBookings';
 
 interface IFormCollectorProps {
-	data: IBooking;
+	data: ITotalBookings;
 	handleDelete(id: string): void;
 }
 
 export default function FormCollector(props: IFormCollectorProps) {
-	const [bookingDate, setBookingDate] = useState(props.data.date);
-	const [bookingTime, setBookingTime] = useState(props.data.time);
-	const [bookingGuests, setBookingGuests] = useState(props.data.guests);
-	const [bookingMessage, setBookingMessage] = useState(props.data.message);
+	const [bookingDate, setBookingDate] = useState(props.data.booking.date);
+	const [bookingTime, setBookingTime] = useState(props.data.booking.time);
+	const [bookingGuests, setBookingGuests] = useState(props.data.booking.guests);
+	const [bookingMessage, setBookingMessage] = useState(
+		props.data.booking.message
+	);
 
 	function handleDate(e: ChangeEvent<HTMLInputElement>) {
 		setBookingDate(e.target.value);
@@ -35,16 +36,18 @@ export default function FormCollector(props: IFormCollectorProps) {
 		e.preventDefault();
 
 		const newBooking = {
-			_id: props.data._id,
+			_id: props.data.booking._id,
 			date: bookingDate,
 			time: bookingTime,
 			guests: bookingGuests,
 			message: bookingMessage,
-			customerId: props.data.customerId,
+			customerId: props.data.booking.customerId,
 		};
 
 		axios
-			.put(`http://localhost:8000/update/${props.data._id}`, { newBooking })
+			.put(`http://localhost:8000/update/${props.data.booking._id}`, {
+				newBooking,
+			})
 			.then((response) => {
 				console.log(response);
 			});
@@ -56,30 +59,33 @@ export default function FormCollector(props: IFormCollectorProps) {
 
 	return (
 		<form onSubmit={handleUpdate}>
+			<p>
+				{props.data.customer.firstName + ' ' + props.data.customer.lastName}{' '}
+			</p>
 			<input
 				value={bookingDate}
-				key={props.data.date}
+				key={props.data.booking.date}
 				onChange={handleDate}
 				className='form-input'
 			/>
 
 			<input
 				value={bookingTime}
-				key={props.data.time}
+				key={props.data.booking.time}
 				onChange={handleTime}
 				className='form-input'
 			/>
 
 			<input
 				value={bookingGuests}
-				key={props.data.guests}
+				key={props.data.booking.guests}
 				onChange={handleGuests}
 				className='form-input'
 			/>
 
 			<input
 				value={bookingMessage}
-				key={props.data.message}
+				key={props.data.booking.message}
 				onChange={handleMessage}
 				className='form-input'
 			/>
@@ -87,7 +93,7 @@ export default function FormCollector(props: IFormCollectorProps) {
 				<i
 					className='fas fa-trash-alt'
 					onClick={() => {
-						sendDelete(props.data._id);
+						sendDelete(props.data.booking._id);
 					}}
 				></i>
 			</span>
