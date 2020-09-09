@@ -1,12 +1,12 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
-import Time from './Time';
+import DateComponent from './DateComponent';
 
 test('should contain Time component', () => {
     let sendFunctionProps = jest.fn();
-    const {getByText} = render(<Time sendTime={sendFunctionProps} />)
+    const {getByText} = render(<DateComponent sendDate={sendFunctionProps} />)
 
-    let Btn = getByText(/18/ || /21/)
+    let Btn = getByText(/01-jan/)
 
     fireEvent.click(Btn);
 
