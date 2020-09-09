@@ -6,12 +6,11 @@ import IBooking from '../../interface/IBooking';
 import ICustomer from '../../interface/ICustomer';
 import Calendar from 'react-calendar';
 import FormCollector from '../formCollector/FormCollector';
-import { Link } from 'react-router-dom';
 import ITotalBookings from '../../interface/ITotalBookings';
 
 interface IAdminProps {
-	allBookings: IBooking[];
-	allCustomers: ICustomer[];
+  allBookings: IBooking[];
+  allCustomers: ICustomer[];
 }
 
 export default function Admin(props: IAdminProps) {
