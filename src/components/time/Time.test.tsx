@@ -4,6 +4,7 @@ import Time from './Time';
 
 test('should contain Time component', () => {
     let sendFunctionProps = jest.fn();
+
     const {getByText} = render(<Time sendTime={sendFunctionProps} />)
 
     let Btn = getByText(/18/ || /21/)
@@ -11,4 +12,16 @@ test('should contain Time component', () => {
     fireEvent.click(Btn);
 
     expect(sendFunctionProps).toHaveBeenCalled();
+});
+
+test('should change className when clicked', () => {
+    let sendFunctionProps = jest.fn();
+    const {getByText} = render(<Time sendTime={sendFunctionProps} />);
+
+    const dateBtn = getByText(/21/);
+
+    fireEvent.click(dateBtn);
+
+    expect(dateBtn).toHaveClass('btn-style');
+
 });
