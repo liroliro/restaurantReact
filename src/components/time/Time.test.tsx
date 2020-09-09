@@ -7,9 +7,9 @@ test('should contain Time component', () => {
 
     const {getByText} = render(<Time sendTime={sendFunctionProps} />)
 
-    let Btn = getByText(/18/ || /21/)
+    let dateBtn = getByText(/18/ || /21/)
 
-    fireEvent.click(Btn);
+    fireEvent.click(dateBtn);
 
     expect(sendFunctionProps).toHaveBeenCalled();
 });

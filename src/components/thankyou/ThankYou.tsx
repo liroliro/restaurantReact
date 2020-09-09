@@ -15,7 +15,7 @@ export default function ThankYou(props: IThankYouProps) {
 			</h3>
 			<p>
 				Du är välkommen till Dinnerspace den: {props.theCustomer.date}, klockan:{' '}
-				{props.theCustomer.time}, för{' '}
+				{props.theCustomer.time}.00, för{' '}
 				{props.theCustomer.guests === 1
 					? props.theCustomer.guests + ' person'
 					: props.theCustomer.guests + ' personer'}
