@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
-import './Date.scss';
+import './DateComponent.scss';
 
 interface IDateProps {
 	sendDate(date: string): void;
