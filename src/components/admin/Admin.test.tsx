@@ -3,28 +3,32 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import Admin from './Admin';
 
+const bookings = [
+	{
+		_id: 'blabla',
+		date: '19/8',
+		time: 18,
+		guests: 18,
+		message: 'Hejhej',
+		customerId: '1234567890',
+	},
+]
+
+const customers = [
+	{
+		_id: '1',
+		firstName: 'Oscar',
+		lastName: 'Mattsson',
+		email: 'hello@gmail.com',
+		phone: '1234567890',
+	},
+]
+
 test('Should contain h2s', () => {
 	const { container } = render(
 		<Admin
-			allBookings={[
-				{
-					_id: 'blabla',
-					date: '19/8',
-					time: 18,
-					guests: 18,
-					message: 'Hejhej',
-					customerId: '1234567890',
-				},
-			]}
-			allCustomers={[
-				{
-					_id: '1',
-					firstName: 'Oscar',
-					lastName: 'Mattsson',
-					email: 'hello@gmail.com',
-					phone: '1234567890',
-				},
-			]}
+			allBookings={bookings}
+			allCustomers={customers}
 		/>
 	);
 
@@ -35,25 +39,8 @@ test('Should contain h2s', () => {
 test('should contain string Datum', () => {
 	const { getByText } = render(
 		<Admin
-			allBookings={[
-				{
-					_id: 'blabla',
-					date: '19/8',
-					time: 18,
-					guests: 18,
-					message: 'Hejhej',
-					customerId: '1234567890',
-				},
-			]}
-			allCustomers={[
-				{
-					_id: '1',
-					firstName: 'Oscar',
-					lastName: 'Mattsson',
-					email: 'hello@gmail.com',
-					phone: '1234567890',
-				},
-			]}
+			allBookings={bookings}
+			allCustomers={customers}
 		/>
 	);
 
