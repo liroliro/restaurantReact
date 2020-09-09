@@ -1,7 +1,27 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, fireEvent } from '@testing-library/react';
 import Time from './Time';
 
 test('should contain Time component', () => {
-    render(<Time sendTime=21 />)
+    let sendFunctionProps = jest.fn();
+
+    const {getByText} = render(<Time sendTime={sendFunctionProps} />)
+
+    let Btn = getByText(/18/ || /21/)
+
+    fireEvent.click(Btn);
+
+    expect(sendFunctionProps).toHaveBeenCalled();
+});
+
+test('should change className when clicked', () => {
+    let sendFunctionProps = jest.fn();
+    const {getByText} = render(<Time sendTime={sendFunctionProps} />);
+
+    const dateBtn = getByText(/21/);
+
+    fireEvent.click(dateBtn);
+
+    expect(dateBtn).toHaveClass('btn-style');
+
 });
