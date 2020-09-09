@@ -7,39 +7,33 @@ import ICustomer from '../../interface/ICustomer';
 import Calendar from 'react-calendar';
 import FormCollector from '../formCollector/FormCollector';
 import { Link } from 'react-router-dom';
+import ITotalBookings from '../../interface/ITotalBookings';
 
 interface IAdminProps {
 	allBookings: IBooking[];
-	allCustomers: ICustomer[]	;
+	allCustomers: ICustomer[];
 }
 
-
-interface ITotalBookings {
-	booking: IBooking,
-	customer: ICustomer
-}
-
-export default function Admin(
-	props: IAdminProps
-) {
-
-	let defaultBookingValue: ITotalBookings[] = [{
-		booking: {
-			_id: '',
-			date: '',
-			time: 0,
-			guests: 0,
-			message: '',
-			customerId: ''
+export default function Admin(props: IAdminProps) {
+	let defaultBookingValue: ITotalBookings[] = [
+		{
+			booking: {
+				_id: '',
+				date: '',
+				time: 0,
+				guests: 0,
+				message: '',
+				customerId: '',
+			},
+			customer: {
+				_id: '',
+				firstName: '',
+				lastName: '',
+				email: '',
+				phone: '',
+			},
 		},
-		customer: {
-			_id: '',
-			firstName: '',
-			lastName: '',
-			email: '',
-			phone: ''
-		}
-	}]
+	];
 
 	const [bookings, setBookings] = useState(defaultBookingValue);
 	const [showBookings, setShowBookings] = useState(false);
@@ -54,33 +48,51 @@ export default function Admin(
 	}
 
 	function checkForAvaliableTables(dateString: string) {
-		const pairedBookings = props.allBookings.map((b) => {
+		const pairedBookings: ITotalBookings[] = props.allBookings.map((b) => {
 			if (b.date === dateString) {
-				const customer = props.allCustomers.filter((c)=> {
-					if(b.customerId === c._id) {
+				const customer = props.allCustomers.filter((c) => {
+					if (b.customerId === c._id) {
 						return c;
-					} return null;
-				})
+					}
+					return null;
+				});
 
-				let summedBooking = {
+				let summedBooking: ITotalBookings = {
 					booking: b,
-					customer: customer[0]
-				}
+					customer: customer[0],
+				};
 
 				return summedBooking;
 			} else {
-				return null
+				const mockBooking: ITotalBookings = {
+					booking: {
+						_id: '',
+						date: '',
+						time: 0,
+						guests: 0,
+						message: '',
+						customerId: '',
+					},
+					customer: {
+						_id: '',
+						firstName: '',
+						lastName: '',
+						email: '',
+						phone: '',
+					},
+				};
+
+				return mockBooking;
 			}
 		});
 
-		const totalBookings = pairedBookings.filter((b)=> {
-			if(b !== null) {
-				return b
-			} return
-		})
+		const totalBookings: ITotalBookings[] = pairedBookings.filter((b) => {
+			if (b.customer._id !== '') {
+				return b;
+			}
+			return null;
+		});
 
-
-console.log(totalBookings)
 		setBookings(totalBookings);
 		setShowBookings(true);
 	}
@@ -100,7 +112,12 @@ console.log(totalBookings)
 
 	return (
 		<div className='header'>
-			<h2 className='header-text'>Välkommen till <Link to='/' className='adminLink'>DinnerSpace</Link></h2>
+			<h2 className='header-text'>
+				Välkommen till{' '}
+				<Link to='/' className='adminLink'>
+					DinnerSpace
+				</Link>
+			</h2>
 
 			<div>
 				<Calendar onClickDay={updateCalendar} />
@@ -118,7 +135,7 @@ console.log(totalBookings)
 							return (
 								<FormCollector
 									data={m}
-									key={m._id}
+									key={m.booking._id}
 									handleDelete={handleDelete}
 								/>
 							);

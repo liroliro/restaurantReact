@@ -1,36 +1,42 @@
-.horizontal-scroll-wrapper {
-	margin-left: 35%;
-	width: 75px;
-	height: 280px;
-	overflow-y: auto;
-	overflow-x: hidden;
-	transform: rotate(-90deg) translateY(-100px);
-	transform-origin: right top;
-}
-.horizontal-scroll-wrapper > div {
-	margin: 3px;
-	width: 50px;
-	height: 50px;
-	transform: rotate(90deg);
-}
-.horizontal-scroll-wrapper > div > button {
-	left: 30px;
-	width: 50px;
-	height: 50px;
-	margin: 0;
-	font-size: 20px;
-	border-radius: 3px;
-	background: rgb(106, 209, 183);
-	color: #ffffff;
+
+.guestsConstainer >  { 
+		float:left;
+		width: 140px;
+		height: 200px;
+		margin: 0 auto;
+	} 
+
+	.guestsConstainer > div { 
+		float:left;
+		width: 350px;
+		margin: 0 auto;
+	} 
+	.buttonContainer {
+		float: left;
+		margin: 3px;
+		width: 50px;
+		height: 50px;
+	/* 	display: table; */
 	
-	cursor: pointer;
-	border: 1px solid white;
-	padding: 8px;
-
-	transition: all 0.1s ease-in;
-
-	&:hover {
-		background: #7fb4a4;
-		color: #ffffff;
 	}
+
+.buttonContainer > button {
+	width: 50px;
+	height: 50px;
+	/* margin: 3px; */
+	font-size: 20px;
+	background:rgb(106, 209, 183);
+	color: #ffffff;
+	margin: 0;
+	border-radius: 3px;
+}
+.moreButton > button {
+	width: 90px;
+	height: 30px;
+	/* margin: 3px; */
+	font-size: 13px;
+	background:rgb(106, 209, 183);
+	color: #ffffff;
+	margin: 0;
+	border-radius: 3px; 
 }

@@ -1,4 +1,10 @@
-import React, { useState, FormEvent, ChangeEvent, useEffect, useRef } from 'react';
+import React, {
+	useState,
+	FormEvent,
+	ChangeEvent,
+	useEffect,
+	useRef,
+} from 'react';
 
 import DateComponent from '../date/DateComponent';
 import Time from '../time/Time';
@@ -6,7 +12,7 @@ import Guests from '../guests/Guests';
 import axios from 'axios';
 import IBooking from '../../interface/IBooking';
 import ThankYou from '../thankyou/ThankYou';
-import IThankYou from '../../interface/IThankYou'
+import IThankYou from '../../interface/IThankYou';
 
 interface IHomeProps {
 	allBookings: IBooking[];
@@ -32,16 +38,28 @@ export default function Home(props: IHomeProps) {
 	const [bookingSent, setBookingSent] = useState(false);
 	const [gdpr, setGdpr] = useState(false);
 	const [gdprError, setGdprError] = useState('');
-	let thankYouDefaultValue: IThankYou = { firstName: '', lastName: '', email: '', phone: '', date: '', time: 0, guests: 0, message: '' }
-	const [theBookedCustomer, setTheBookedCustomer] = useState<IThankYou>(thankYouDefaultValue)
 
+	let thankYouDefaultValue: IThankYou = {
+		firstName: '',
+		lastName: '',
+		email: '',
+		phone: '',
+		date: '',
+		time: 0,
+		guests: 0,
+		message: '',
+	};
 
-	const firstRender = useRef(true)
+	const [theBookedCustomer, setTheBookedCustomer] = useState<IThankYou>(
+		thankYouDefaultValue
+	);
+
+	const firstRender = useRef(true);
 
 	useEffect(() => {
 		if (firstRender.current) {
-			firstRender.current = false
-			return
+			firstRender.current = false;
+			return;
 		}
 	}, [firstName, lastName, email, phone]);
 
@@ -52,15 +70,6 @@ export default function Home(props: IHomeProps) {
 			setValidation(true);
 		}
 	}, [guestTime, guestsNumber, guestDate]);
-
-	function handleGdpr(e: any) {
-		if (e.target.checked === true) {
-			return setGdpr(true);
-		} else {
-			return setGdpr(false);
-		}
-
-	}
 
 	function updateGuestsNumber(number: number) {
 		setGuestsNumber(number);
@@ -93,41 +102,54 @@ export default function Home(props: IHomeProps) {
 	function updateMessage(e: ChangeEvent<HTMLTextAreaElement>) {
 		setMessage(e.target.value);
 	}
+	function handleGdpr(e: ChangeEvent<HTMLInputElement>) {
+		setGdpr(e.target.checked);
+	}
 
 	function handleSubmit(e: FormEvent) {
 		e.preventDefault();
 		if (firstName === '' || firstName === null) {
 			setFirstNameError('Vänligen fyll i ditt förnamn.');
+			return;
 		} else {
-			setFirstNameError('')
+			setFirstNameError('');
 		}
 
 		if (lastName === '' || lastName === null) {
-			setLastNameError('Vänligen fyll i ditt efternamn.')
+			setLastNameError('Vänligen fyll i ditt efternamn.');
+			return;
 		} else {
-			setLastNameError('')
+			setLastNameError('');
 		}
 
 		if (email === '' || email === null) {
-			setEmailError('Vänligen fyll i din email.')
+			setEmailError('Vänligen fyll i din email.');
+			return;
 		} else {
-			setEmailError('')
+			setEmailError('');
 		}
 
 		if (phone === '' || phone === null) {
-			setPhoneError('Vänligen fyll i ditt telefonnummer.')
+			setPhoneError('Vänligen fyll i ditt telefonnummer.');
+			return;
 		} else {
-			setPhoneError('')
+			setPhoneError('');
+		}
+		if (gdpr === false) {
+			setGdprError('Vänligen godkänn gdpr');
+			return;
+		} else {
+			setGdprError('');
 		}
 
-		if (gdpr === false ) {
-			setGdprError('Vänligen godkänn gdpr')
-		} else {
-			setGdprError('')
-		}
-
-		if (firstName === '' && lastName === '' && email === '' && phone === '') {
-			return
+		if (
+			firstName === '' &&
+			lastName === '' &&
+			email === '' &&
+			phone === '' &&
+			gdpr === true
+		) {
+			return;
 		} else {
 			axios
 				.post('http://localhost:8000/', {
@@ -141,7 +163,7 @@ export default function Home(props: IHomeProps) {
 					message,
 				})
 				.then((response) => {
-					console.log(response.data)
+					console.log(response.data);
 
 					let bookedCustomer: IThankYou = {
 						firstName: response.data.user.firstName,
@@ -152,15 +174,13 @@ export default function Home(props: IHomeProps) {
 						date: response.data.booking.date,
 						time: response.data.booking.time,
 						guests: response.data.booking.guests,
-					}
+					};
 
-					setBookingSent(true)
-					setTheBookedCustomer(bookedCustomer)
+					setBookingSent(true);
+					setTheBookedCustomer(bookedCustomer);
 				});
 		}
-
 	}
-
 
 	function checkForAvaliableTables() {
 		let table: number = 0;
@@ -180,7 +200,6 @@ export default function Home(props: IHomeProps) {
 		setTables(false);
 
 		table < 15 ? setShowTables(true) : setShowTables(false);
-
 	}
 
 	const validatedButton = (
@@ -220,24 +239,29 @@ export default function Home(props: IHomeProps) {
 					{tables ? (
 						''
 					) : showTables ? (
-						<div className="expanding-form">
+						<div className='expanding-form'>
 							<div className='bookingConfirm'>
 								Du vill boka bord den {guestDate} klockan {guestTime}.00 för{' '}
-								{guestsNumber === 1 ? (guestsNumber + ' person') : (guestsNumber + ' personer')}.
+								{guestsNumber === 1
+									? guestsNumber + ' person'
+									: guestsNumber + ' personer'}
+								.
 							</div>
 							<div className='bookingConfirm'>
 								{' '}
 								Fyll i dina uppgifter för att genomföra bokningen.
 							</div>
-							<div className="form-div">
-								<div>
+							<div className='form-div'>
+								<div className='input-wrapping-div'>
 									<label>
 										<input
 											name='firstName'
 											onChange={updateFirstName}
 											placeholder='Förnamn'
 										/>
-										{firstNameError && <p className="input-error-message">{firstNameError}</p>}
+										{firstNameError && (
+											<p className='input-error-message'>{firstNameError}</p>
+										)}
 									</label>
 									<label>
 										<input
@@ -245,44 +269,68 @@ export default function Home(props: IHomeProps) {
 											onChange={updateLastName}
 											placeholder='Efternamn'
 										/>
+										{lastNameError && (
+											<p className='input-error-message'>{lastNameError}</p>
+										)}
 									</label>
-									{lastNameError && <p className="input-error-message">{lastNameError}</p>}
 								</div>
-								<div>
+								<div className='input-wrapping-div'>
 									<label>
 										<input
 											name='email'
 											onChange={updateEmail}
 											placeholder='Email'
 										/>
+										{emailError && (
+											<p className='input-error-message'>{emailError}</p>
+										)}
 									</label>
-									{emailError && <p className="input-error-message">{emailError}</p>}
 									<label>
 										<input
 											name='phone'
 											onChange={updatePhone}
 											placeholder='Telefonnummer'
 										/>
+										{phoneError && (
+											<p className='input-error-message'>{phoneError}</p>
+										)}
 									</label>
-									{phoneError && <p className="input-error-message">{phoneError}</p>}
 								</div>
-								<div>
+								<div className='input-wrapping-div'>
 									<label>
-										<textarea onChange={updateMessage} placeholder='Meddelande' />
+										<textarea
+											onChange={updateMessage}
+											placeholder='Meddelande'
+										/>
 									</label>
-									<input type="checkbox" name="gdprInput" value="Vi godkänner gdpr."onChange={handleGdpr} />
-									{gdprError && <p className="input-error-message">{gdprError}</p>}
-									<button type='submit' className="btn-post">Boka</button>
+								</div>
+								<div className='input-wrapping-div'>
+									<div className='GDPR-checkbox'>
+										<input
+											type='checkbox'
+											name='gdprInput'
+											onChange={handleGdpr}
+										/>{' '}
+									</div>
+									<span className='GDPR-style'>Vi godkänner GDPR.</span>
+									{gdprError && (
+										<p className='input-error-message'>{gdprError}</p>
+									)}
+								</div>
+								<div className='input-wrapping-div'>
+									<button type='submit' className='btn-post'>
+										Boka
+									</button>
 								</div>
 							</div>
 						</div>
 					) : (
-								<p className="error-message">Det är tyvärr slut på bord denna tiden.</p>
+								<p className='error-message'>
+									Det är tyvärr slut på bord denna tiden.
+						</p>
 							)}
 
-					{bookingSent ? (
-						<ThankYou theCustomer={theBookedCustomer} />
-					) : null}
+					{bookingSent ? <ThankYou theCustomer={theBookedCustomer} /> : null}
 				</div>
 			</form>
 		</div>
