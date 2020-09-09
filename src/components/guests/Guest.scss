@@ -1,3 +1,21 @@
+.guest-btn-style {
+	background: rgb(165, 248, 227);
+    color: #ffffff;
+    text-shadow: 1px 0.5px rgb(138, 137, 137);
+
+	left: 30px;
+	width: 50px;
+	height: 50px;
+	margin: 0;
+	font-size: 20px;
+	border-radius: 3px;
+	outline: none;
+
+	cursor: pointer;
+	border: 1px solid white;
+	padding: 8px;
+
+}
 
 .guestsConstainer >  { 
 		float:left;
@@ -20,7 +38,7 @@
 	
 	}
 
-.buttonContainer > button {
+.unclicked-guest {
 	width: 50px;
 	height: 50px;
 	/* margin: 3px; */
@@ -28,7 +46,19 @@
 	background:rgb(106, 209, 183);
 	color: #ffffff;
 	margin: 0;
+	outline: none;
 	border-radius: 3px;
+
+	cursor: pointer;
+	border: 1px solid #1a202c;
+	padding: 8px;
+
+	transition: all 0.1s ease-in;
+
+	&:hover {
+		background: #79b4a2;
+		color: var(--text-color);
+	}
 }
 .moreButton > button {
 	width: 90px;
@@ -38,5 +68,7 @@
 	background:rgb(106, 209, 183);
 	color: #ffffff;
 	margin: 0;
+	outline: none;
+	border: none;
 	border-radius: 3px; 
 }
