@@ -1,3 +1,25 @@
+.guest-btn-style {
+	background: rgb(165, 248, 227);
+    color: #ffffff;
+    text-shadow: 1px 0.5px rgb(138, 137, 137);
+
+	left: 30px;
+	width: 50px;
+	height: 50px;
+	margin: 0;
+	font-size: 20px;
+	border-radius: 3px;
+	
+	cursor: pointer;
+	border: 1px solid white;
+	padding: 8px;
+
+	&:hover {
+		background: #7fb4a4;
+		color: #ffffff;
+	}
+}
+
 .horizontal-scroll-wrapper {
 	margin-left: 35%;
 	width: 75px;
@@ -13,14 +35,14 @@
 	height: 50px;
 	transform: rotate(90deg);
 }
-.horizontal-scroll-wrapper > div > button {
+.unclicked-guest {
 	left: 30px;
 	width: 50px;
 	height: 50px;
 	margin: 0;
 	font-size: 20px;
 	border-radius: 3px;
-	background: rgb(106, 209, 183);
+	background: rgb(68, 209, 174);
 	color: #ffffff;
 	
 	cursor: pointer;

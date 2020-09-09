@@ -28,7 +28,7 @@ export default function Time(props: ITimeProps) {
 				</button>
 			</span>
 			<span>
-				<button value='21' onClick={handleClick} type='button'>
+				<button value='21' onClick={handleClick} type='button' className='unclicked'>
 					21:00
 				</button>
 			</span>

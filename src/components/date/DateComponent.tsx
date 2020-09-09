@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
+import './Date.scss';
+
 
 interface IDateProps {
 	sendDate(date: string): void;
@@ -45,6 +47,7 @@ export default function DateComponent(props: IDateProps) {
 	}, []);
 
 	function handleClickedDate(e: React.MouseEvent<HTMLButtonElement>) {
+		e.currentTarget.className = 'btn-style';
 		sendToParent(e.currentTarget.value);
 		setBtnState(!btnState);
 	}
@@ -62,8 +65,6 @@ export default function DateComponent(props: IDateProps) {
 		sendToParent(dateString);
 	}
 
-	let btn_class = btnState ? 'clickedButton' : 'unclickedButton';
-
 	return (
 		<>
 			<div className='dateComponent'>
@@ -72,7 +73,7 @@ export default function DateComponent(props: IDateProps) {
 						onClick={handleClickedDate}
 						value={guestDate}
 						type='button'
-						className={btn_class}
+						className='unclicked'
 					>
 						{guestDate}
 					</button>
@@ -82,7 +83,7 @@ export default function DateComponent(props: IDateProps) {
 						onClick={handleClickedDate}
 						value={guestDateTomorrow}
 						type='button'
-						className={btn_class}
+						className='unclicked'
 					>
 						{guestDateTomorrow}
 					</button>
@@ -92,7 +93,7 @@ export default function DateComponent(props: IDateProps) {
 						onClick={handleClickedDate}
 						value={guestDateDayAfterTomorrow}
 						type='button'
-						className={btn_class}
+						className='unclicked'
 					>
 						{guestDateDayAfterTomorrow}
 					</button>

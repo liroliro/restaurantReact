@@ -110,44 +110,42 @@ export default function Home(props: IHomeProps) {
 		e.preventDefault();
 		if (firstName === '' || firstName === null) {
 			setFirstNameError('Vänligen fyll i ditt förnamn.');
-			return;
+			// return;
 		} else {
 			setFirstNameError('');
 		}
-
 		if (lastName === '' || lastName === null) {
 			setLastNameError('Vänligen fyll i ditt efternamn.');
-			return;
+			// return;
 		} else {
 			setLastNameError('');
 		}
-
 		if (email === '' || email === null) {
 			setEmailError('Vänligen fyll i din email.');
-			return;
+			// return;
 		} else {
 			setEmailError('');
 		}
-
 		if (phone === '' || phone === null) {
 			setPhoneError('Vänligen fyll i ditt telefonnummer.');
-			return;
+			// return;
 		} else {
 			setPhoneError('');
 		}
 		if (gdpr === false) {
 			setGdprError('Vänligen godkänn gdpr');
-			return;
+			e.currentTarget.className = 'GDPR';
+			// return;
 		} else {
 			setGdprError('');
 		}
-
 		if (
 			firstName === '' &&
 			lastName === '' &&
 			email === '' &&
 			phone === '' &&
 			gdpr === true
+			
 		) {
 			return;
 		} else {

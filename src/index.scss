@@ -45,29 +45,6 @@ code {
 	flex-direction: row;
 	margin: 3px;
 }
-.dateComponent > span > button {
-	width: 80px;
-	margin: 0 auto;
-	padding: 0;
-	font-size: 15px;
-	display: inline-block;
-	text-align: center;
-	background: rgb(106, 209, 183);
-	border-radius: 3px;
-	color: #ffffff;
-	outline: none;
-
-	cursor: pointer;
-	border: 1px solid #1a202c;
-	padding: 8px;
-
-	transition: all 0.1s ease-in;
-
-	&:hover {
-		background: #79b4a2;
-		color: var(--text-color);
-	}
-}
 
 .timeComponent {
 	margin-top: 10px;
@@ -90,7 +67,7 @@ code {
 	line-height: 10px;
 	text-align: center;
 	border-radius: 3px;
-	background: rgb(106, 209, 183);
+	background: rgb(68, 209, 174);
 	color: #ffffff;
 
 	cursor: pointer;
@@ -98,11 +75,6 @@ code {
 	padding: 8px;
 
 	transition: all 0.1s ease-in;
-
-	&:hover {
-		background: #7fb4a4;
-		color: #ffffff;
-	}
 }
 
 .Btn-search-disabled {
@@ -181,6 +153,7 @@ textarea {
 	width: 65%;
 	margin: auto;
 	margin-top: 40px;
+	margin-bottom: 40px;
 }
 
 input {
@@ -213,6 +186,9 @@ input {
 	text-align: center;
 	border-radius: 3px;
 	margin: 3px;
+	background: rgb(68, 209, 174);
+	color: #ffffff;
+	margin-bottom: 20px;
 
 	cursor: pointer;
 	border: 1px solid #1a202c;

@@ -7,6 +7,7 @@ interface IGuestsProps {
 
 export default function Guests(props: IGuestsProps) {
 	function handleOptions(e: React.MouseEvent<HTMLButtonElement>) {
+		e.currentTarget.className = 'guest-btn-style';
 		sendToParent(Number(e.currentTarget.value));
 	}
 
@@ -17,71 +18,70 @@ export default function Guests(props: IGuestsProps) {
 	return (
 		<div className='horizontal-scroll-wrapper'>
 			<div>
-				<button value='1' onClick={handleOptions} type='button'>
+				<button value='1' onClick={handleOptions} type='button' className='unclicked-guest'>
 					1
 				</button>
 			</div>
 			<div>
-				<button value='2' onClick={handleOptions} type='button'>
+				<button value='2' onClick={handleOptions} type='button' className='unclicked-guest'>
 					2
 				</button>
 			</div>
 			<div>
-				<button value='3' onClick={handleOptions} type='button'>
+				<button value='3' onClick={handleOptions} type='button' className='unclicked-guest'>
 					3
 				</button>
 			</div>
-
 			<div>
-				<button value='4' onClick={handleOptions} type='button'>
+				<button value='4' onClick={handleOptions} type='button' className='unclicked-guest'>
 					4
 				</button>
 			</div>
 
 			<div>
-				<button value='5' onClick={handleOptions} type='button'>
+				<button value='5' onClick={handleOptions} type='button' className='unclicked-guest'>
 					5
 				</button>
 			</div>
 
 			<div>
-				<button value='6' onClick={handleOptions} type='button'>
+				<button value='6' onClick={handleOptions} type='button' className='unclicked-guest'>
 					6
 				</button>
 			</div>
 
 			<div>
-				<button value='7' onClick={handleOptions} type='button'>
+				<button value='7' onClick={handleOptions} type='button' className='unclicked-guest'>
 					7
 				</button>
 			</div>
 
 			<div>
-				<button value='8' onClick={handleOptions} type='button'>
+				<button value='8' onClick={handleOptions} type='button' className='unclicked-guest'>
 					8
 				</button>
 			</div>
 
 			<div>
-				<button value='9' onClick={handleOptions} type='button'>
+				<button value='9' onClick={handleOptions} type='button' className='unclicked-guest'>
 					9
 				</button>
 			</div>
 
 			<div>
-				<button value='10' onClick={handleOptions} type='button'>
+				<button value='10' onClick={handleOptions} type='button' className='unclicked-guest'>
 					10
 				</button>
 			</div>
 
 			<div>
-				<button value='11' onClick={handleOptions} type='button'>
+				<button value='11' onClick={handleOptions} type='button' className='unclicked-guest'>
 					11
 				</button>
 			</div>
 
 			<div>
-				<button value='12' onClick={handleOptions} type='button'>
+				<button value='12' onClick={handleOptions} type='button' className='unclicked-guest'>
 					12
 				</button>
 			</div>
