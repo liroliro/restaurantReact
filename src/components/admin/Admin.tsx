@@ -114,11 +114,7 @@ export default function Admin(props: IAdminProps) {
 		<div className='header'>
 			<h2 className='header-text'>
 				Välkommen till{' '}
-<<<<<<< HEAD
 				<a href='/' className='admin'>
-=======
-				<a href='/' className='admina'>
->>>>>>> 209fad01bc69216cf22519e20ad7623d1320aad9
 					DinnerSpace
 				</a>
 			</h2>
