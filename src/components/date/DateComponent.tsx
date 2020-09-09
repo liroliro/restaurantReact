@@ -4,7 +4,6 @@ import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import './Date.scss';
 
-
 interface IDateProps {
 	sendDate(date: string): void;
 }
@@ -101,7 +100,7 @@ export default function DateComponent(props: IDateProps) {
 				<span>
 					<i
 						className='fas fa-calendar-week fa-lg'
-						onClick={() => setShowCalendar(true)}
+						onClick={() => setShowCalendar(!showCalendar)}
 					></i>
 					{showCalendar ? <Calendar onClickDay={updateCalendar} /> : ''}
 				</span>

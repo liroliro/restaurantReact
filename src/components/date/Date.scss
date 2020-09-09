@@ -1,7 +1,7 @@
 .btn-style {
 	background: rgb(165, 248, 227);
-    color: #ffffff;
-    text-shadow: 1px 0.5px rgb(138, 137, 137);
+	color: #ffffff;
+	text-shadow: 1px 0.5px rgb(138, 137, 137);
 
 	width: 80px;
 	margin: 0 auto;
@@ -41,4 +41,9 @@
 		background: #79b4a2;
 		color: var(--text-color);
 	}
+}
+
+.react-calendar {
+	color: #222;
+	margin-top: 1.6rem;
 }
