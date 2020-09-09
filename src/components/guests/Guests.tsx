@@ -1,14 +1,11 @@
 import React, { useState, ChangeEvent } from 'react';
-import './Guest.scss';
-
-
+import './Guests.scss';
 
 interface IGuestsProps {
 	sendTheNumber(theNumber: number): void;
 }
 
 export default function Guests(props: IGuestsProps) {
-
 	const [showLastSix, setShowLastSix] = useState(false);
 	const [hideButton, setHideButton] = useState(true);
 
@@ -28,94 +25,89 @@ export default function Guests(props: IGuestsProps) {
 
 	return (
 		<React.Fragment>
-
 			<div className='guestsConstainer'>
-				<div className="firstSix">
-
-					<div className="buttonContainer">
+				<div className='firstSix'>
+					<div className='buttonContainer'>
 						<button value='1' onClick={handleOptions} type='button'>
 							1
-				</button>
+						</button>
 					</div>
-					<div className="buttonContainer">
+					<div className='buttonContainer'>
 						<button value='2' onClick={handleOptions} type='button'>
 							2
-				</button>
+						</button>
 					</div>
-					<div className="buttonContainer">
+					<div className='buttonContainer'>
 						<button value='3' onClick={handleOptions} type='button'>
 							3
-				</button>
+						</button>
 					</div>
 
-					<div className="buttonContainer">
+					<div className='buttonContainer'>
 						<button value='4' onClick={handleOptions} type='button'>
 							4
-				</button>
+						</button>
 					</div>
 
-					<div className="buttonContainer">
+					<div className='buttonContainer'>
 						<button value='5' onClick={handleOptions} type='button'>
 							5
-				</button>
+						</button>
 					</div>
 
-					<div className="buttonContainer">
+					<div className='buttonContainer'>
 						<button value='6' onClick={handleOptions} type='button'>
 							6
-				</button>
+						</button>
 					</div>
 					{hideButton ? (
-						<div className="moreButton">
+						<div className='moreButton'>
 							<button type='button' onClick={handleShowLastSix}>
 								fler gäster...
-				</button>
+							</button>
 						</div>
 					) : null}
-
-
 				</div>
 				{showLastSix ? (
-					<div className="lastSix">
-						<div className="buttonContainer">
+					<div className='lastSix'>
+						<div className='buttonContainer'>
 							<button value='7' onClick={handleOptions} type='button'>
 								7
-				</button>
+							</button>
 						</div>
 
-						<div className="buttonContainer">
+						<div className='buttonContainer'>
 							<button value='8' onClick={handleOptions} type='button'>
 								8
-				</button>
+							</button>
 						</div>
 
-						<div className="buttonContainer">
+						<div className='buttonContainer'>
 							<button value='9' onClick={handleOptions} type='button'>
 								9
-				</button>
+							</button>
 						</div>
 
-						<div className="buttonContainer">
+						<div className='buttonContainer'>
 							<button value='10' onClick={handleOptions} type='button'>
 								10
-				</button>
+							</button>
 						</div>
 
-						<div className="buttonContainer">
+						<div className='buttonContainer'>
 							<button value='11' onClick={handleOptions} type='button'>
 								11
-				</button>
+							</button>
 						</div>
 
-						<div className="buttonContainer">
+						<div className='buttonContainer'>
 							<button value='12' onClick={handleOptions} type='button'>
 								12
-				</button>
+							</button>
 						</div>
 					</div>
 				) : null}
 			</div>
-
 		</React.Fragment>
-	)
+	);
 }
