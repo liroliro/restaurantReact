@@ -45,29 +45,6 @@ code {
 	flex-direction: row;
 	margin: 3px;
 }
-.dateComponent > span > button {
-	width: 80px;
-	margin: 0 auto;
-	padding: 0;
-	font-size: 15px;
-	display: inline-block;
-	text-align: center;
-	background: rgb(106, 209, 183);
-	border-radius: 3px;
-	color: #ffffff;
-	outline: none;
-
-	cursor: pointer;
-	border: 1px solid #1a202c;
-	padding: 8px;
-
-	transition: all 0.1s ease-in;
-
-	&:hover {
-		background: #79b4a2;
-		color: var(--text-color);
-	}
-}
 
 .timeComponent {
 	margin-top: 10px;
@@ -90,19 +67,16 @@ code {
 	line-height: 10px;
 	text-align: center;
 	border-radius: 3px;
-	background: rgb(106, 209, 183);
+	background: rgb(68, 209, 174);
 	color: #ffffff;
+	margin-bottom: 1.6rem;
+	outline: none;
 
 	cursor: pointer;
 	border: 1px solid #1a202c;
 	padding: 8px;
 
 	transition: all 0.1s ease-in;
-
-	&:hover {
-		background: #7fb4a4;
-		color: #ffffff;
-	}
 }
 
 .Btn-search-disabled {
@@ -111,6 +85,7 @@ code {
 	margin: 0 auto;
 	padding: 0;
 	font-size: 15px;
+	outline: none;
 	display: inline-block;
 	line-height: 10px;
 	text-align: center;
@@ -119,24 +94,13 @@ code {
 	color: #ffffff;
 	color: rgb(75, 75, 75);
 	opacity: 0.7;
+	margin-bottom: 1.6rem;
 
 	cursor: pointer;
 	border: 1px solid #1a202c;
 	padding: 8px;
 
 	transition: all 0.1s ease-in;
-}
-
-.expanding-form {
-	// overflow: hidden;
-	// line-height: 50px;
-
-	// transition: all .5s ease-in-out;
-	// height: 0;
-
-	// .expanding-form:target {
-	// 	height: 50px;
-	// }
 }
 
 .bookingConfirm {
@@ -159,7 +123,9 @@ code {
 		}
 
 		.GDPR-style {
-			font-size: 13px;
+			color: red;
+			margin: 10px;
+			font-weight: bold;
 		}
 
 		.GDPR-checkbox {
@@ -181,9 +147,12 @@ textarea {
 	width: 65%;
 	margin: auto;
 	margin-top: 40px;
+	margin-bottom: 40px;
 }
 
-input {
+input,
+textarea {
+	font-family: 'Open Sans', sans-serif;
 	overflow: visible;
 	box-shadow: 0px 2px 0px 0px rgba(0, 0, 0, 0.1);
 	border: 0px;
@@ -209,12 +178,16 @@ input {
 .btn-post {
 	width: 80px;
 	margin: 0 auto;
+	outline: none;
 	padding: 0;
 	font-size: 15px;
 	display: inline-block;
 	text-align: center;
 	border-radius: 3px;
 	margin: 3px;
+	background: rgb(68, 209, 174);
+	color: #ffffff;
+	margin-bottom: 20px;
 
 	cursor: pointer;
 	border: 1px solid #1a202c;

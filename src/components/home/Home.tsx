@@ -37,7 +37,8 @@ export default function Home(props: IHomeProps) {
 	const [phoneError, setPhoneError] = useState('');
 	const [bookingSent, setBookingSent] = useState(false);
 	const [gdpr, setGdpr] = useState(false);
-	const [gdprError, setGdprError] = useState('');
+
+	const [gdprClass, setGdprClass] = useState('');
 
 	let thankYouDefaultValue: IThankYou = {
 		firstName: '',
@@ -102,52 +103,52 @@ export default function Home(props: IHomeProps) {
 	function updateMessage(e: ChangeEvent<HTMLTextAreaElement>) {
 		setMessage(e.target.value);
 	}
+
 	function handleGdpr(e: ChangeEvent<HTMLInputElement>) {
 		setGdpr(e.target.checked);
 	}
 
 	function handleSubmit(e: FormEvent) {
 		e.preventDefault();
+
 		if (firstName === '' || firstName === null) {
 			setFirstNameError('Vänligen fyll i ditt förnamn.');
-			return;
 		} else {
 			setFirstNameError('');
 		}
 
 		if (lastName === '' || lastName === null) {
 			setLastNameError('Vänligen fyll i ditt efternamn.');
-			return;
 		} else {
 			setLastNameError('');
 		}
 
 		if (email === '' || email === null) {
 			setEmailError('Vänligen fyll i din email.');
-			return;
 		} else {
 			setEmailError('');
 		}
 
 		if (phone === '' || phone === null) {
 			setPhoneError('Vänligen fyll i ditt telefonnummer.');
-			return;
 		} else {
 			setPhoneError('');
 		}
-		if (gdpr === false) {
-			setGdprError('Vänligen godkänn gdpr');
-			return;
-		} else {
-			setGdprError('');
+
+		if (gdpr) {
+			setGdprClass('');
+		}
+
+		if (!gdpr) {
+			setGdprClass('GDPR-style');
 		}
 
 		if (
-			firstName === '' &&
-			lastName === '' &&
-			email === '' &&
-			phone === '' &&
-			gdpr === true
+			firstName === '' ||
+			lastName === '' ||
+			email === '' ||
+			phone === '' ||
+			!gdpr
 		) {
 			return;
 		} else {
@@ -239,7 +240,7 @@ export default function Home(props: IHomeProps) {
 					{tables ? (
 						''
 					) : showTables ? (
-						<div className='expanding-form'>
+						<div>
 							<div className='bookingConfirm'>
 								Du vill boka bord den {guestDate} klockan {guestTime}.00 för{' '}
 								{guestsNumber === 1
@@ -312,10 +313,7 @@ export default function Home(props: IHomeProps) {
 											onChange={handleGdpr}
 										/>{' '}
 									</div>
-									<span className='GDPR-style'>Vi godkänner GDPR.</span>
-									{gdprError && (
-										<p className='input-error-message'>{gdprError}</p>
-									)}
+									<span className={gdprClass}>Vi godkänner GDPR.</span>
 								</div>
 								<div className='input-wrapping-div'>
 									<button type='submit' className='btn-post'>

@@ -27,9 +27,8 @@
 	display: inline-block;
 	text-align: center;
 	background: rgb(68, 209, 174);
-	// background: rgb(106, 209, 183);
 	border-radius: 3px;
-	color: white;
+	color: #ffffff;
 	outline: none;
 
 	cursor: pointer;
@@ -42,4 +41,9 @@
 		background: #79b4a2;
 		color: var(--text-color);
 	}
+}
+
+.react-calendar {
+	color: #222;
+	margin-top: 1.6rem;
 }

@@ -13,6 +13,7 @@ export default function Guests(props: IGuestsProps) {
 	const [hideButton, setHideButton] = useState(true);
 
 	function handleOptions(e: React.MouseEvent<HTMLButtonElement>) {
+		e.currentTarget.className = 'guest-btn-style';
 		sendToParent(Number(e.currentTarget.value));
 	}
 
