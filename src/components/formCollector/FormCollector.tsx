@@ -60,7 +60,7 @@ export default function FormCollector(props: IFormCollectorProps) {
 	return (
 		<form onSubmit={handleUpdate}>
 			<p>
-				{props.data.customer.firstName + ' ' + props.data.customer.lastName}{' '}
+				{props.data.customer.firstName + ' ' + props.data.customer.lastName}
 			</p>
 			<input
 				value={bookingDate}

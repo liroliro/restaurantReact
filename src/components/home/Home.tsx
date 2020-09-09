@@ -28,16 +28,18 @@ export default function Home(props: IHomeProps) {
 	const [email, setEmail] = useState('');
 	const [phone, setPhone] = useState('');
 	const [message, setMessage] = useState('');
+
 	const [tables, setTables] = useState(true);
-	const [validation, setValidation] = useState(false);
 	const [showTables, setShowTables] = useState(Boolean);
+	const [validation, setValidation] = useState(false);
+
 	const [firstNameError, setFirstNameError] = useState('');
 	const [lastNameError, setLastNameError] = useState('');
 	const [emailError, setEmailError] = useState('');
 	const [phoneError, setPhoneError] = useState('');
 	const [bookingSent, setBookingSent] = useState(false);
-	const [gdpr, setGdpr] = useState(false);
 
+	const [gdpr, setGdpr] = useState(false);
 	const [gdprClass, setGdprClass] = useState('');
 
 	let thankYouDefaultValue: IThankYou = {
@@ -328,7 +330,7 @@ export default function Home(props: IHomeProps) {
 						</p>
 							)}
 
-					{bookingSent ? <ThankYou theCustomer={theBookedCustomer} /> : null}
+					{bookingSent ? <ThankYou theCustomer={theBookedCustomer} /> : ''}
 				</div>
 			</form>
 		</div>

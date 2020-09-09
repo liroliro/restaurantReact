@@ -97,7 +97,7 @@ export default function Admin(props: IAdminProps) {
 	}
 
 	function handleDelete(id: string) {
-		axios.delete(`http://localhost:8000/delete/${id}`, {}).then((response) => {
+		axios.delete(`http://localhost:8000/delete/${id}`).then(() => {
 			const updatedBookings = bookings.filter((b) => {
 				if (b.booking._id !== id) {
 					return b;
@@ -139,7 +139,7 @@ export default function Admin(props: IAdminProps) {
 								/>
 							);
 					  })
-					: null}
+					: ''}
 			</div>
 		</div>
 	);

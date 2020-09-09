@@ -1,9 +1,8 @@
 import React from 'react';
 
-import { render, fireEvent, getByDisplayValue } from '@testing-library/react';
+import { render, fireEvent } from '@testing-library/react';
 import Guests from './Guests';
 import userEvent from '@testing-library/user-event'
-import { exportAllDeclaration } from '@babel/types';
 
 test('should contain Guest component', () => {
     let sendFunction = jest.fn();

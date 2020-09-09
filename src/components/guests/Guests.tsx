@@ -24,7 +24,7 @@ export default function Guests(props: IGuestsProps) {
   }
 
   return (
-    <React.Fragment>
+    <>
       <div className='guestsConstainer'>
         <div className='firstSix'>
           <div className='buttonContainer'>
@@ -168,6 +168,6 @@ export default function Guests(props: IGuestsProps) {
           </div>
         ) : null}
       </div>
-    </React.Fragment>
+    </>
   );
 }
